@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Ma maps</title>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://www.google.com/jsapi"></script>
+  </head>
+  <body>
+    <div>
+      <div id="map" style="height:600px;"></div>
+      <div id="elevation_chart"></div>
+      <script>
+      google.load('visualization', '1', {packages: ['columnchart']});
+
+      function initMap() {
+        var path = [
+            {lat: 47.608, lng: -122.335},
+            {lat: 47.608, lng: -122.332}];
+
+
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: path[1],
+          mapTypeId: 'terrain'
+        });
+
+        var elevator = new google.maps.ElevationService;
+        displayPathElevation(path, elevator, map);
+      }
+
+      function displayPathElevation(path, elevator, map) {
+        new google.maps.Polyline({
+          path: path,
+          strokeColor: '#0000CC',
+          strokeOpacity: 0.4,
+          map: map
+        });
+
+        elevator.getElevationAlongPath({
+          'path': path,
+          'samples': 256
+        }, plotElevation);
+      }
+
+      function plotElevation(elevations, status) {
+        var chartDiv = document.getElementById('elevation_chart');
+        if (status !== 'OK') {
+          chartDiv.innerHTML = 'Cannot show elevation: request failed because ' +
+              status;
+          return;
+        }
+        var chart = new google.visualization.ColumnChart(chartDiv);
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Sample');
+        data.addColumn('number', 'Elevation');
+        for (var i = 0; i < elevations.length; i++) {
+          data.addRow(['', elevations[i].elevation]);
+        }
+
+
+        chart.draw(data, {
+          height: 150,
+          legend: 'none',
+          titleY: 'Elevation (m)'
+        });
+      }
+      </script>
+      <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDULz6eDciWw-YnOdMAw4FAiZajDWxUAas&callback=initMap">
+      </script>
+    </div>
+  </body>
+</html>
