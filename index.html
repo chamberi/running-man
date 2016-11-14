@@ -20,49 +20,11 @@
       <script>
       google.load('visualization', '1', {packages: ['columnchart']});
 
-      // function initMap() {
-        // var path = [
-        //     {lat: 47.608, lng: -122.335},
-        //     {lat: 47.608, lng: -122.332}];
-        //
-        //
-        //
-        // var map = new google.maps.Map(document.getElementById('map'), {
-        //   zoom: 15,
-        //   center: path[1],
-        //   mapTypeId: 'terrain'
-        // });
-        //
-        // var elevator = new google.maps.ElevationService;
-        // displayPathElevation(path, elevator, map);
-
       var markers = [];
       function initMap() {
         var path = [
             {lat: 47.608, lng: -122.335},
             {lat: 47.608, lng: -122.332}];
-
-
-      // }
-
-
-      // function initMap() {
-      //   var map = new google.maps.Map(document.getElementById('map'), {
-      //     zoom: 4,
-      //     center: {lat: -25.363882, lng: 131.044922 }
-      //   });
-      //
-      //   map.addListener('click', function(e) {
-      //     placeMarkerAndPanTo(e.latLng, map);
-      //   });
-      // }
-      //
-      // function placeMarkerAndPanTo(latLng, map) {
-      //   var marker = new google.maps.Marker({
-      //     position: latLng,
-      //     map: map
-      //   });
-      // }
 
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -126,10 +88,6 @@
           };
         });
 
-        // waypts.push({
-        //   location: checkboxArray[i].value,
-        //   stopover: true
-        // });
         console.log(waypts);
 
         directionsService.route({
