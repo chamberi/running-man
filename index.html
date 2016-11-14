@@ -23,22 +23,100 @@
       <script>
       google.load('visualization', '1', {packages: ['columnchart']});
 
+      // function initMap() {
+        // var path = [
+        //     {lat: 47.608, lng: -122.335},
+        //     {lat: 47.608, lng: -122.332}];
+        //
+        //
+        //
+        // var map = new google.maps.Map(document.getElementById('map'), {
+        //   zoom: 15,
+        //   center: path[1],
+        //   mapTypeId: 'terrain'
+        // });
+        //
+        // var elevator = new google.maps.ElevationService;
+        // displayPathElevation(path, elevator, map);
+
+      // }
+
+
+      // function initMap() {
+      //   var map = new google.maps.Map(document.getElementById('map'), {
+      //     zoom: 4,
+      //     center: {lat: -25.363882, lng: 131.044922 }
+      //   });
+      //
+      //   map.addListener('click', function(e) {
+      //     placeMarkerAndPanTo(e.latLng, map);
+      //   });
+      // }
+      //
+      // function placeMarkerAndPanTo(latLng, map) {
+      //   var marker = new google.maps.Marker({
+      //     position: latLng,
+      //     map: map
+      //   });
+      // }
+
+      // The user can then click an option to hide, show or delete the markers.
+      var map;
+      var markers = [];
+
+
+
       function initMap() {
-        var path = [
-            {lat: 47.608, lng: -122.335},
-            {lat: 47.608, lng: -122.332}];
+        var haightAshbury = {lat: 37.769, lng: -122.446};
 
-
-
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
-          center: path[1],
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: haightAshbury,
           mapTypeId: 'terrain'
         });
 
-        var elevator = new google.maps.ElevationService;
-        displayPathElevation(path, elevator, map);
+        // This event listener will call addMarker() when the map is clicked.
+        map.addListener('click', function(event) {
+          addMarker(event.latLng);
+        });
+
+        // Adds a marker at the center of the map.
+        addMarker(haightAshbury);
       }
+
+      // Adds a marker to the map and push to the array.
+      function addMarker(location) {
+        var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+        markers.push(marker);
+      }
+
+      // Sets the map on all markers in the array.
+      function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+      }
+
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+
+      // Shows any markers currently in the array.
+      function showMarkers() {
+        setMapOnAll(map);
+      }
+
+      // Deletes all markers in the array by removing references to them.
+      function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }
+
+
 
       function displayPathElevation(path, elevator, map) {
         new google.maps.Polyline({
@@ -53,6 +131,8 @@
           'samples': 256
         }, plotElevation);
       }
+
+
 
       function plotElevation(elevations, status) {
         var chartDiv = document.getElementById('elevation_chart');
