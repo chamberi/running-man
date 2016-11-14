@@ -18,7 +18,7 @@ function initMap() {
   });
 
   document.getElementById('submit').addEventListener('click', function() {
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
+    calculateAndDisplayRoute(directionsService, directionsDisplay, map);
   });
 }
 
@@ -46,7 +46,7 @@ function displayPathElevation(path, elevator, map) {
   }, plotElevation);
 }
 
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+function calculateAndDisplayRoute(directionsService, directionsDisplay, map) {
   var waypts = markers.slice(1,markers.length-1).map(function(element){
     return {
       location: {lat: element.position.lat(), lng: element.position.lng()},
@@ -56,13 +56,19 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
   directionsService.route({
     origin: {lat: markers[0].position.lat(), lng: markers[0].position.lng()},
-    destination: {lat: markers[markers.length - 1].position.lat(), lng: markers[markers.length - 1].position.lng()},
+    destination: {lat: markers[markers.length - 1].position.lat(),
+      lng: markers[markers.length - 1].position.lng()},
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: 'WALKING'
   }, function(response, status) {
     if (status === 'OK') {
       var path = response.routes[0].overview_path.map(function(markerPoint) {
+        // console.log(markerPoint);
+        // new google.maps.Marker({
+        //   position: markerPoint,
+        //   map: map
+        // });
         return {
           lat: markerPoint.lat(),
           lng: markerPoint.lng()
