@@ -18,7 +18,9 @@ function initMap() {
   });
 
   document.getElementById('submit').addEventListener('click', function() {
+
     calculateAndDisplayRoute(directionsService, directionsDisplay, map);
+
   });
 }
 
@@ -54,6 +56,14 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay, map) {
     };
   });
 
+
+  // waypts.push({
+  //   location: checkboxArray[i].value,
+  //   stopover: true
+  // });
+  // console.log(waypts);
+
+
   directionsService.route({
     origin: {lat: markers[0].position.lat(), lng: markers[0].position.lng()},
     destination: {lat: markers[markers.length - 1].position.lat(),
@@ -81,6 +91,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay, map) {
       var summaryPanel = document.getElementById('directions-panel');
       summaryPanel.innerHTML = '';
       // For each route, display summary information.
+
       for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
         summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
@@ -88,11 +99,33 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay, map) {
         summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+
       }
     } else {
       window.alert('Directions request failed due to ' + status);
     }
+
+    var totalDistance = document.getElementById('total-distance');
+    totalDistance.innerHTML= '';
+    // this should create a new array with the distances of the legs
+    function countDistance() {
+      var runDistanceArray = route.legs.map(function(curr){
+        console.log(curr.distance.value);
+        return (curr.distance.value);
+      });
+      // this should reduce the created array into one distance value
+      var totalDistanceCount = runDistanceArray.reduce(function(prev, curr){
+        console.log(prev+curr);
+        return prev + curr;
+
+      },0);
+      var distanceMiles = totalDistanceCount/1609.34;
+      totalDistance.innerHTML= 'Total distance ran: '+totalDistanceCount+' meters, or '+
+      distanceMiles.toFixed(2) + ' miles';
+    }
+    countDistance();
   });
+
 }
 
 function plotElevation(elevations, status) {
