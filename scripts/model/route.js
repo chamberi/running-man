@@ -7,21 +7,29 @@
 
   Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
 
+  selectRouteDisplay = function() {
+    $('#route-filter').on('change', function() {
+      Route.testAll();
+    });
+  };
+
+  selectRouteDisplay();
+
   Route.renderRoutes = function(directions, map, which){
     var routes = googleMap.getRequest(which);
     routes.forEach(function(route) {
       directions.route(route.request,
       function(response, status) {
         if (status === 'OK') {
-          googleMap.rendererArray[route.id].setOptions({
-            preserveViewport: true,
-            suppressInfoWindows: true,
-            polylineOptions: {
-              strokeWeight: 4,
-              strokeOpacity: .8,
-              strokeColor: Route.colors[route.id]
-            }
-          });
+          // googleMap.rendererArray[route.id].setOptions({
+          //   preserveViewport: true,
+          //   suppressInfoWindows: true,
+          //   polylineOptions: {
+          //     strokeWeight: 4,
+          //     strokeOpacity: .8,
+          //     strokeColor: Route.colors[route.id]
+          //   }
+          // });
           console.log(googleMap.rendererArray[route.id]);
           googleMap.rendererArray[route.id].setDirections(response);
           var responseRoute = response.routes[0];
@@ -71,9 +79,11 @@
     });
   };
 
+
   Route.testAll = function() {
-    Route.renderRoutes(googleMap.directionsService, googleMap.map, [0,1,2,3]);
+    Route.renderRoutes(googleMap.directionsService, googleMap.map, '[' + $('#route-filter').val() + ']');
   };
+
 
   Route.calcRoute = function(route, newRoute) {
     var len = route.markers.length;
