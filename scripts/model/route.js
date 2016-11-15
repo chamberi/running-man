@@ -35,19 +35,19 @@
     }, function(response, status) {
       if (status === 'OK') {
         // route.response = response;
-        console.log(googleMap.routeList);
+        // console.log(googleMap.routeList);
         var route = response.routes[0];
-        console.log(response);
-        var path = route.overview_path.map(function(point) {
+        // console.log(response);
+        directionsDisplay.setDirections(response);
+
+        var elevator = new google.maps.ElevationService;
+        var detailedPath = route.overview_path.map(function(point) {
           return {
             lat: point.lat(),
             lng: point.lng()
           };
         });
-        directionsDisplay.setDirections(response);
-
-        var elevator = new google.maps.ElevationService;
-        elevationsView.displayPathElevation(path, elevator, map);
+        elevationsView.displayPathElevation(detailedPath, elevator, map);
 
         var summaryPanel = document.getElementById('directions-panel');
         summaryPanel.innerHTML = '';
