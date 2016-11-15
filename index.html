@@ -13,6 +13,12 @@
     <div>
       <div id="map" style="height:600px;"></div>
       <input type="submit" id="submit">
+      <div id="floating-panel">
+        <input onclick="clearMarkers();" type=button value="Hide Markers">
+        <input onclick="showMarkers();" type=button value="Show All Markers">
+        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+      </div>
+      <div id="map"></div>
       <div id="total-distance"></div>
       <div id="directions-panel"></div>
       <div id="elevation_chart"></div>

@@ -57,8 +57,5 @@
     map.panTo(latLng);
   };
 
-
-
-
   module.googleMap = googleMap;
 })(window);
