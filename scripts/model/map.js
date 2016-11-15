@@ -2,6 +2,7 @@
 
   var googleMap = {};
   googleMap.markers = [];
+  googleMap.requestArray;
 
 
   googleMap.initMap = function() {
@@ -21,7 +22,6 @@
     if (localStorage.getItem('routes')) {
       console.log('fetching routes');
       googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
-      Route.calcRoute(directionsService, directionsDisplay, map, googleMap.routeList[0], false);
     } else {
       console.log('no stored routes');
       googleMap.routeList = [];
@@ -39,11 +39,23 @@
         ele.setMap(null);
       });
       googleMap.markers = [];
-      Route.calcRoute(directionsService, directionsDisplay, map, newRoute, true);
+      Route.calcRoute(newRoute, true);
+      Route.renderRoutes(directionsService, newRoute.renderer, map, [newRoute.id]);
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
     });
 
 
+  };
+
+
+
+  googleMap.getRequest = function(which) {
+    googleMap.routeList.reduce(function(acc, cur, idx){
+      if (which.includes(idx)){
+        acc.push(cur);
+      }
+      return acc;
+    }, []);
   };
 
   googleMap.placeMarkerAndPanTo = function(latLng, map) {
