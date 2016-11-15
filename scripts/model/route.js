@@ -86,32 +86,30 @@
 
 
   Route.calcRoute = function(route, newRoute) {
+
+  Route.calcRoute = function(route) {
+
     var len = route.markers.length;
-    var path;
-    if (newRoute) {
-
-      path = route.markers.map(function(marker){
-        return {
-          location: {lat: marker.position.lat(), lng: marker.position.lng()},
-          stopover: true
-        };
-      });
-
-      route.request = {
-        origin: {lat: path[0].location.lat,
-                lng: path[0].location.lng},
-        destination: {lat: path[len - 1].location.lat,
-                    lng: path[len - 1].location.lng},
-        waypoints: path.slice(1,len-1),
-        optimizeWaypoints: true,
-        travelMode: 'WALKING'
+    var path = route.markers.map(function(marker){
+      return {
+        location: {lat: marker.position.lat(), lng: marker.position.lng()},
+        stopover: true
       };
+    });
 
-      route.markers = path;
-      googleMap.routeList.push(route);
-    } else {
-      path = route.markers;
-    }
+    route.request = {
+      origin: {lat: path[0].location.lat,
+              lng: path[0].location.lng},
+      destination: {lat: path[len - 1].location.lat,
+                  lng: path[len - 1].location.lng},
+      waypoints: path.slice(1,len-1),
+      optimizeWaypoints: true,
+      travelMode: 'WALKING'
+    };
+
+    route.markers = path;
+    googleMap.routeList.push(route);
+
   };
 
   module.Route = Route;

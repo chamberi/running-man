@@ -41,6 +41,10 @@
       });
       googleMap.markers = [];
       Route.calcRoute(newRoute, true);
+      var renderer = new google.maps.DirectionsRenderer();
+      renderer.setMap(map);
+      googleMap.rendererArray.push(renderer);
+
       Route.renderRoutes(directionsService, map, [newRoute.id]);
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
     });
