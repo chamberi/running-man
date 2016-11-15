@@ -1,91 +1,107 @@
 (function(module) {
 
-  function Route(markers){
-    Route.idCount++;
-    this.id = Route.idCount;
+  function Route(markers, map){
+    this.id = googleMap.routeList.length;
     this.markers = markers;
   };
 
-  Route.idCount = 0;
+  Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
 
+  Route.renderRoutes = function(directions, map, which){
+    var routes = googleMap.getRequest(which);
+    routes.forEach(function(route) {
+      directions.route(route.request,
+      function(response, status) {
+        if (status === 'OK') {
+          googleMap.rendererArray[route.id].setOptions({
+            preserveViewport: true,
+            suppressInfoWindows: true,
+            polylineOptions: {
+              strokeWeight: 4,
+              strokeOpacity: .8,
+              strokeColor: Route.colors[route.id]
+            }
+          });
+          console.log(googleMap.rendererArray[route.id]);
+          googleMap.rendererArray[route.id].setDirections(response);
+          var responseRoute = response.routes[0];
+          var elevator = new google.maps.ElevationService;
+          var detailedPath = responseRoute.overview_path.map(function(point) {
+            return {
+              lat: point.lat(),
+              lng: point.lng()
+            };
+          });
+          elevationsView.displayPathElevation(detailedPath, elevator, map);
 
-  Route.calcRoute = function(directions, directionsDisplay, map, route, newRoute) {
+          var summaryPanel = document.getElementById('directions-panel');
+          summaryPanel.innerHTML = '';
+          // For each route, display summary information.
+
+          for (var i = 0; i < responseRoute.legs.length; i++) {
+            var routeSegment = i + 1;
+            summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+                '</b><br>';
+            summaryPanel.innerHTML += responseRoute.legs[i].start_address + ' to ';
+            summaryPanel.innerHTML += responseRoute.legs[i].end_address + '<br>';
+            summaryPanel.innerHTML += responseRoute.legs[i].distance.text + '<br><br>';
+
+            var totalDistance = document.getElementById('total-distance');
+            totalDistance.innerHTML= '';
+            // this should create a new array with the distances of the legs
+            function countDistance() {
+              var runDistanceArray = responseRoute.legs.map(function(curr){
+                return (curr.distance.value);
+              });
+              // this should reduce the created array into one distance value
+              var totalDistanceCount = runDistanceArray.reduce(function(prev, curr){
+                return prev + curr;
+
+              },0);
+              var distanceMiles = totalDistanceCount/1609.34;
+              totalDistance.innerHTML= 'Total distance ran: '+totalDistanceCount+' meters, or '+
+              distanceMiles.toFixed(2) + ' miles';
+            }
+            countDistance();
+          }
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      });
+    });
+  };
+
+  Route.testAll = function() {
+    Route.renderRoutes(googleMap.directionsService, googleMap.map, [0,1,2,3]);
+  };
+
+  Route.calcRoute = function(route, newRoute) {
     var len = route.markers.length;
     var path;
     if (newRoute) {
+
       path = route.markers.map(function(marker){
         return {
           location: {lat: marker.position.lat(), lng: marker.position.lng()},
           stopover: true
         };
       });
+
+      route.request = {
+        origin: {lat: path[0].location.lat,
+                lng: path[0].location.lng},
+        destination: {lat: path[len - 1].location.lat,
+                    lng: path[len - 1].location.lng},
+        waypoints: path.slice(1,len-1),
+        optimizeWaypoints: true,
+        travelMode: 'WALKING'
+      };
+
       route.markers = path;
       googleMap.routeList.push(route);
     } else {
       path = route.markers;
     }
-    directions.route({
-      origin: {lat: path[0].location.lat,
-               lng: path[0].location.lng},
-      destination: {lat: path[len - 1].location.lat,
-                    lng: path[len - 1].location.lng},
-      waypoints: path.slice(1,len-1),
-      optimizeWaypoints: true,
-      travelMode: 'WALKING'
-    }, function(response, status) {
-      if (status === 'OK') {
-        // route.response = response;
-        // console.log(googleMap.routeList);
-        var route = response.routes[0];
-        // console.log(response);
-        directionsDisplay.setDirections(response);
-
-        var elevator = new google.maps.ElevationService;
-        var detailedPath = route.overview_path.map(function(point) {
-          return {
-            lat: point.lat(),
-            lng: point.lng()
-          };
-        });
-        elevationsView.displayPathElevation(detailedPath, elevator, map);
-
-        var summaryPanel = document.getElementById('directions-panel');
-        summaryPanel.innerHTML = '';
-        // For each route, display summary information.
-
-        for (var i = 0; i < route.legs.length; i++) {
-          var routeSegment = i + 1;
-          summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-              '</b><br>';
-          summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-          summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-          summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-
-          var totalDistance = document.getElementById('total-distance');
-          totalDistance.innerHTML= '';
-          // this should create a new array with the distances of the legs
-          function countDistance() {
-            var runDistanceArray = route.legs.map(function(curr){
-              console.log(curr.distance.value);
-              return (curr.distance.value);
-            });
-            // this should reduce the created array into one distance value
-            var totalDistanceCount = runDistanceArray.reduce(function(prev, curr){
-              console.log(prev+curr);
-              return prev + curr;
-
-            },0);
-            var distanceMiles = totalDistanceCount/1609.34;
-            totalDistance.innerHTML= 'Total distance ran: '+totalDistanceCount+' meters, or '+
-            distanceMiles.toFixed(2) + ' miles';
-          }
-          countDistance();
-        }
-      } else {
-        window.alert('Directions request failed due to ' + status);
-      }
-
-    });
   };
 
   module.Route = Route;
