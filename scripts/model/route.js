@@ -32,7 +32,7 @@
               lng: point.lng()
             };
           });
-          elevationsView.displayPathElevation(detailedPath, elevator, map);
+          elevationsView.displayPathElevation(detailedPath, elevator, map, route);
 
           var summaryPanel = document.getElementById('directions-panel');
           summaryPanel.innerHTML = '';

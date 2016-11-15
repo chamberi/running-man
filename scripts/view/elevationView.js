@@ -2,37 +2,50 @@
 
   var elevationsView = {};
 
-  elevationsView.displayPathElevation = function(path, elevator, map) {
+  elevationsView.displayPathElevation = function(path, elevator, map, route) {
     new google.maps.Polyline({
       path: path,
       strokeColor: '#0000CC',
       strokeOpacity: 0.4,
       map: map
     });
-
+    elevationsView.route = route;
     elevator.getElevationAlongPath({
       'path': path,
       'samples': 256
     }, elevationsView.plotElevation);
   };
 
-  elevationsView.plotElevation = function(elevations, status) {
-    // console.log(elevations[0]);
-    // console.log(elevations[0].location.lng());
-    elevations.reduce(function(acc, cur, idx) {
+  elevationsView.calculateStats = function(elevations) {
+    var hillData = [];
+    elevationsView.route.totalGain = elevations.reduce(function(acc, cur, idx) {
       if (idx < elevations.length - 1) {
         nextIdx = idx + 1;
-
         if (elevations[nextIdx].elevation > cur.elevation) {
-          acc = acc + elevations[nextIdx].elevation - cur.elevation;
-          var gain = acc.toFixed(2);
-          // console.log('Elevation gain = ' + gain);
+          var dif = parseFloat((elevations[nextIdx].elevation - cur.elevation).toFixed(3));
+          acc += dif;
+          acc = parseFloat(acc.toFixed(3));
+          var miniDistance = parseFloat(google.maps.geometry.spherical.computeDistanceBetween (elevations[idx].location, elevations[nextIdx].location).toFixed(3));
+          hillData.push([dif, miniDistance, parseFloat((dif / miniDistance).toFixed(3))]);
         };
-        return acc;
       };
-    }, []);
+      return acc;
+    }, 0.0);
 
+    elevationsView.route.steepDistance = hillData.filter(function(dataPoint){
+      return dataPoint[2] > 0.10;
+    })
+    .reduce(function(acc, cur, idx) {
+      acc += cur[1];
+      acc = parseFloat(acc.toFixed(3));
+      return acc;
+
+    }, 0);
+  };
+
+  elevationsView.plotElevation = function(elevations, status) {
     var chartDiv = document.getElementById('elevation_chart');
+    elevationsView.calculateStats(elevations);
     if (status !== 'OK') {
       chartDiv.innerHTML = 'Cannot show elevation: request failed because ' +
           status;
