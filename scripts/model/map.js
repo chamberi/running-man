@@ -129,6 +129,18 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay, map) {
 }
 
 function plotElevation(elevations, status) {
+  elevations.reduce(function(acc, cur, idx) {
+    if (idx < elevations.length - 1) {
+      nextIdx = idx + 1;
+    };
+    if (elevations[nextIdx].elevation > cur.elevation) {
+      acc = acc + elevations[nextIdx].elevation - cur.elevation;
+      var gain = acc.toFixed(2);
+    };
+    console.log('Elevation gain = ' + gain);
+    return acc;
+  }, []);
+
   var chartDiv = document.getElementById('elevation_chart');
   if (status !== 'OK') {
     chartDiv.innerHTML = 'Cannot show elevation: request failed because ' +
