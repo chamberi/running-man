@@ -2,7 +2,7 @@
 
   var googleMap = {};
   googleMap.markers = [];
-  googleMap.requestArray;
+  googleMap.rendererArray = [];
 
 
   googleMap.initMap = function() {
@@ -12,46 +12,45 @@
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain'
     });
+    googleMap.map = map;
 
     var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer({
-      map: map,
-      draggable: true
-    });
+
+    googleMap.directionsService = directionsService;
 
     if (localStorage.getItem('routes')) {
       console.log('fetching routes');
       googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
+      googleMap.routeList.forEach(function(el, idx){
+        googleMap.rendererArray.push(new google.maps.DirectionsRenderer());
+        googleMap.rendererArray[idx].setMap(map);
+      });
     } else {
       console.log('no stored routes');
       googleMap.routeList = [];
     }
-
-    directionsDisplay.setMap(map);
 
     map.addListener('click', function(e) {
       googleMap.placeMarkerAndPanTo(e.latLng, map);
     });
 
     document.getElementById('submit').addEventListener('click', function() {
-      var newRoute = new Route(googleMap.markers);
+      var newRoute = new Route(googleMap.markers, map);
       googleMap.markers.forEach(function(ele){
         ele.setMap(null);
       });
       googleMap.markers = [];
       Route.calcRoute(newRoute, true);
-      Route.renderRoutes(directionsService, newRoute.renderer, map, [newRoute.id]);
+      Route.renderRoutes(directionsService, map, [newRoute.id]);
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
     });
 
 
   };
 
-
-
   googleMap.getRequest = function(which) {
-    googleMap.routeList.reduce(function(acc, cur, idx){
-      if (which.includes(idx)){
+    return googleMap.routeList.reduce(function(acc, cur){
+      if (which.includes(cur.id)){
         acc.push(cur);
       }
       return acc;

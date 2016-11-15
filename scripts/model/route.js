@@ -1,21 +1,29 @@
 (function(module) {
 
-  function Route(markers){
-    Route.idCount++;
-    this.id = Route.idCount;
+  function Route(markers, map){
+    this.id = googleMap.routeList.length;
     this.markers = markers;
   };
 
-  Route.idCount = 0;
+  Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
 
-  Route.renderRoutes = function(directions, directionsDisplay, map, which){
+  Route.renderRoutes = function(directions, map, which){
     var routes = googleMap.getRequest(which);
     routes.forEach(function(route) {
       directions.route(route.request,
       function(response, status) {
         if (status === 'OK') {
-          route.renderer.setMap(map);
-
+          googleMap.rendererArray[route.id].setOptions({
+            preserveViewport: true,
+            suppressInfoWindows: true,
+            polylineOptions: {
+              strokeWeight: 4,
+              strokeOpacity: .8,
+              strokeColor: Route.colors[route.id]
+            }
+          });
+          console.log(googleMap.rendererArray[route.id]);
+          googleMap.rendererArray[route.id].setDirections(response);
           var responseRoute = response.routes[0];
           var elevator = new google.maps.ElevationService;
           var detailedPath = responseRoute.overview_path.map(function(point) {
@@ -43,12 +51,10 @@
             // this should create a new array with the distances of the legs
             function countDistance() {
               var runDistanceArray = responseRoute.legs.map(function(curr){
-                console.log(curr.distance.value);
                 return (curr.distance.value);
               });
               // this should reduce the created array into one distance value
               var totalDistanceCount = runDistanceArray.reduce(function(prev, curr){
-                console.log(prev+curr);
                 return prev + curr;
 
               },0);
@@ -65,6 +71,9 @@
     });
   };
 
+  Route.testAll = function() {
+    Route.renderRoutes(googleMap.directionsService, googleMap.map, [0,1,2,3]);
+  };
 
   Route.calcRoute = function(route, newRoute) {
     var len = route.markers.length;
@@ -87,7 +96,7 @@
         optimizeWaypoints: true,
         travelMode: 'WALKING'
       };
-      route.renderer = new google.maps.DirectionsRenderer();
+
       route.markers = path;
       googleMap.routeList.push(route);
     } else {
