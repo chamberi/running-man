@@ -7,21 +7,32 @@
 
   Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
 
+  selectRouteDisplay = function() {
+    googleMap.markers.forEach(function(ele){
+      ele.setMap(null);
+    });
+    $('#route-filter').on('change', function() {
+      Route.testAll();
+    });
+  };
+
+  selectRouteDisplay();
+
   Route.renderRoutes = function(directions, map, which){
     var routes = googleMap.getRequest(which);
     routes.forEach(function(route) {
       directions.route(route.request,
       function(response, status) {
         if (status === 'OK') {
-          googleMap.rendererArray[route.id].setOptions({
-            preserveViewport: true,
-            suppressInfoWindows: true,
-            polylineOptions: {
-              strokeWeight: 4,
-              strokeOpacity: .8,
-              strokeColor: Route.colors[route.id]
-            }
-          });
+          // googleMap.rendererArray[route.id].setOptions({
+          //   preserveViewport: true,
+          //   suppressInfoWindows: true,
+          //   polylineOptions: {
+          //     strokeWeight: 4,
+          //     strokeOpacity: .8,
+          //     strokeColor: Route.colors[route.id]
+          //   }
+          // });
           console.log(googleMap.rendererArray[route.id]);
           googleMap.rendererArray[route.id].setDirections(response);
           var responseRoute = response.routes[0];
@@ -71,33 +82,38 @@
     });
   };
 
+
   Route.testAll = function() {
-    Route.renderRoutes(googleMap.directionsService, googleMap.map, [0,1,2,3]);
+    Route.renderRoutes(googleMap.directionsService, googleMap.map, '[' + $('#route-filter').val() + ']');
   };
 
-  Route.calcRoute = function(route) {
-    var len = route.markers.length;
-    var path = route.markers.map(function(marker){
-      return {
-        location: {lat: marker.position.lat(), lng: marker.position.lng()},
-        stopover: true
-      };
-    });
 
-    route.request = {
-      origin: {lat: path[0].location.lat,
+  Route.calcRoute = function(route, newRoute) {
+
+    Route.calcRoute = function(route) {
+
+      var len = route.markers.length;
+      var path = route.markers.map(function(marker){
+        return {
+          location: {lat: marker.position.lat(), lng: marker.position.lng()},
+          stopover: true
+        };
+      });
+
+      route.request = {
+        origin: {lat: path[0].location.lat,
               lng: path[0].location.lng},
-      destination: {lat: path[len - 1].location.lat,
+        destination: {lat: path[len - 1].location.lat,
                   lng: path[len - 1].location.lng},
-      waypoints: path.slice(1,len-1),
-      optimizeWaypoints: true,
-      travelMode: 'WALKING'
+        waypoints: path.slice(1,len-1),
+        optimizeWaypoints: true,
+        travelMode: 'WALKING'
+      };
+
+      route.markers = path;
+      googleMap.routeList.push(route);
+
     };
-
-    route.markers = path;
-    googleMap.routeList.push(route);
-
   };
-
   module.Route = Route;
 })(window);
