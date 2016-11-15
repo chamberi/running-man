@@ -1,37 +1,41 @@
 (function(module) {
 
-  function Route(newRoute){
-    this.id = Route.idCount;
-    this.markers = newRoute;
+  function Route(markers){
     Route.idCount++;
+    this.id = Route.idCount;
+    this.markers = markers;
   };
 
   Route.idCount = 0;
-  Route.currentRoute;
 
 
-  Route.calcRoute = function(directionsService, directionsDisplay, map, route) {
+  Route.calcRoute = function(directions, directionsDisplay, map, route, newRoute) {
     var len = route.markers.length;
-    var waypts = route.markers.slice(1,len-1).map(function(element){
-      return {
-        location: {lat: element.position.lat(), lng: element.position.lng()},
-        stopover: true
-      };
-    });
-    route.markers.forEach(function(ele){
-      ele.setMap(null);
-    });
-    directionsService.route({
-      origin: {lat: route.markers[0].position.lat(),
-               lng: route.markers[0].position.lng()},
-      destination: {lat: route.markers[len - 1].position.lat(),
-                    lng: route.markers[len - 1].position.lng()},
-      waypoints: waypts,
+    var path;
+    if (newRoute) {
+      path = route.markers.map(function(marker){
+        return {
+          location: {lat: marker.position.lat(), lng: marker.position.lng()},
+          stopover: true
+        };
+      });
+      route.markers = path;
+      googleMap.routeList.push(route);
+    } else {
+      path = route.markers;
+    }
+    directions.route({
+      origin: {lat: path[0].location.lat,
+               lng: path[0].location.lng},
+      destination: {lat: path[len - 1].location.lat,
+                    lng: path[len - 1].location.lng},
+      waypoints: path.slice(1,len-1),
       optimizeWaypoints: true,
       travelMode: 'WALKING'
     }, function(response, status) {
       if (status === 'OK') {
-        googleMap.routes.push(response);
+        // route.response = response;
+        console.log(googleMap.routeList);
         var route = response.routes[0];
         console.log(response);
         var path = route.overview_path.map(function(point) {
@@ -40,12 +44,10 @@
             lng: point.lng()
           };
         });
-        var elevator = new google.maps.ElevationService;
+        directionsDisplay.setDirections(response);
 
+        var elevator = new google.maps.ElevationService;
         elevationsView.displayPathElevation(path, elevator, map);
-        googleMap.routes.forEach(function(route){
-          directionsDisplay.setDirections(route);
-        });
 
         var summaryPanel = document.getElementById('directions-panel');
         summaryPanel.innerHTML = '';
