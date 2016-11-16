@@ -6,7 +6,7 @@
     new google.maps.Polyline({
       path: path,
       strokeColor: '#0000CC',
-      strokeOpacity: 0.4,
+      strokeOpacity: 0,
       map: map
     });
     elevationsView.route = route;

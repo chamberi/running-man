@@ -49,6 +49,9 @@
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
     });
 
+    $('#route-filter').on('change', function() {
+      Route.showRoute();
+    });
 
   };
 
