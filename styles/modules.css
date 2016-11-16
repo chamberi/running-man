@@ -14,8 +14,23 @@ aside {
   font-size: 16px;
   height: 60%;
   width: 20%;
+  border-radius: 10px;
+  padding: 10px;
 }
 
-aside h4 {
-  text-align: center;
+aside h3 {
+  margin-top: 8px;
+}
+
+aside li {
+  list-style: none;
+}
+
+#stats-comparison {
+  font-size: 12px;
+}
+
+aside p, h3 {
+  padding: 0;
+  margin: 2px;
 }

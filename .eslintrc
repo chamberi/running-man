@@ -11,7 +11,7 @@
     "node": true
   },
   "rules": {
-    "max-len": [1, 80],
+    "max-len": [0, 80],
     "semi": [2, "always"],
     "strict": 0,
     "indent": [2, 2],
