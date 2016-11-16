@@ -54,7 +54,6 @@
       googleMap.directionsService.route(route.request,
         function(response, status){
           if (status === 'OK') {
-            console.log('its ok');
             var responseRoute = response.routes[0];
             Route.countDistance(responseRoute, route);
             var detailedPath = responseRoute.overview_path.map(function(point) {
@@ -70,6 +69,22 @@
 
           } else {
             window.alert('Directions request failed due to ' + status);
+
+          // var summaryPanel = document.getElementById('directions-panel');
+          // summaryPanel.innerHTML = '';
+          // // For each route, display summary information.
+          //
+          // for (var i = 0; i < responseRoute.legs.length; i++) {
+          //   var routeSegment = i + 1;
+          //   summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+          //       '</b><br>';
+          //   summaryPanel.innerHTML += responseRoute.legs[i].start_address + ' to ';
+          //   summaryPanel.innerHTML += responseRoute.legs[i].end_address + '<br>';
+          //   summaryPanel.innerHTML += responseRoute.legs[i].distance.text + '<br><br>';
+          //
+          //   var totalDistance = document.getElementById('total-distance');
+          //   totalDistance.innerHTML= '';
+
           }
         });
     });
@@ -78,10 +93,12 @@
     googleMap.rendererArray[route.id - 1].setOptions({
       preserveViewport: true,
       suppressInfoWindows: true,
+      draggable:true,
+      editable:true,
       polylineOptions: {
         strokeWeight: 4,
         strokeOpacity: .8,
-        strokeColor: Route.colors[route.id]
+        strokeColor: Route.colors[route.id - 1]
       }
     });
     googleMap.rendererArray[route.id - 1].setDirections(elevationsView.response);

@@ -4,7 +4,15 @@
   googleMap.markers = [];
   googleMap.rendererArray = [];
 
-
+  function computeTotalDistance(result) {
+    var total = 0;
+    var myroute = result.routes[0];
+    for (var i = 0; i < myroute.legs.length; i++) {
+      total += myroute.legs[i].distance.value;
+    }
+    total = total / 1000;
+    console.log(total);
+  }
   googleMap.initMap = function() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -12,13 +20,20 @@
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain'
     });
+
     var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer({
+      draggable: true,
+      map: googleMap.map,
+    });
+
     googleMap.map = map;
     googleMap.directionsService = directionsService;
+
     googleMap.loadLocal();
     googleMap.loadFilters();
     map.addListener('click', function(e) {
-      googleMap.placeMarkerAndPanTo(e.latLng, map);
+      googleMap.placeMarkerAndPanTo(e.latLng);
     });
 
     document.getElementById('submit').addEventListener('click', function() {
@@ -29,11 +44,17 @@
       googleMap.markers = [];
       Route.initializeRoute(newRoute);
       var renderer = new google.maps.DirectionsRenderer();
+      var renderer = directionsDisplay;
       renderer.setMap(map);
       googleMap.rendererArray.push(renderer);
       Route.calcRoute(Route.renderRoute, [newRoute.id - 1]);
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
+      renderer.addListener('directions_changed', function() {
+        console.log('changed');
+        computeTotalDistance(directionsDisplay.getDirections());
+      });
     });
+
 
     $('#toggle').on('click', function(){
       $('aside').toggle('slide',{direction: 'right'}, 500);
@@ -65,11 +86,21 @@
 
   googleMap.loadLocal = function() {
     if (localStorage.getItem('routes')) {
+
       console.log('fetching routes');
       googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
       googleMap.routeList.forEach(function(el, idx){
-        googleMap.rendererArray.push(new google.maps.DirectionsRenderer());
+        googleMap.rendererArray.push(new google.maps.DirectionsRenderer({
+          draggable: true,
+          map: googleMap.map
+        })
+      );
         googleMap.rendererArray[idx].setMap(googleMap.map);
+        googleMap.rendererArray[idx].addListener('directions_changed', function() {
+          console.log('changed');
+          computeTotalDistance(googleMap.rendererArray[idx].getDirections());
+        });
+
       });
     } else {
       console.log('no stored routes');
@@ -85,16 +116,25 @@
     });
   };
 
-  googleMap.placeMarkerAndPanTo = function(latLng, map) {
+  googleMap.placeMarkerAndPanTo = function(latLng) {
     var marker = new google.maps.Marker({
       position: latLng,
       draggable: true,
-      map: map
+      map: googleMap.map
     });
-
     googleMap.markers.push(marker);
-    map.panTo(latLng);
+    googleMap.map.panTo(latLng);
+    marker.addListener('dblclick', function() {
+      marker.setMap(null);
+      googleMap.markers = [];
+    });
   };
+
+  $('#delete').change(function() {
+    if ($('#delete').prop('clicked')) {
+      googleMap.markers.setMap(null);
+    }
+  });
 
   module.googleMap = googleMap;
 })(window);
