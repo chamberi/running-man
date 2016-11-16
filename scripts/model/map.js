@@ -11,57 +11,9 @@
       mapTypeId: 'terrain'
     });
 
-    googleMap.map = map;
-
-
     var directionsService = new google.maps.DirectionsService;
     googleMap.map = map;
     googleMap.directionsService = directionsService;
-
-
-    if (localStorage.getItem('routes')) {
-      console.log('fetching routes');
-      googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
-      googleMap.routeList.forEach(function(el, idx){
-        googleMap.rendererArray.push(new google.maps.DirectionsRenderer());
-        googleMap.rendererArray[idx].setMap(map);
-      });
-
-      $('#mapall').change(function() {
-        if( $('#mapall').prop('checked')) {
-          showOverlays();
-        }
-        else {
-          clearOverlays();
-        }
-      });
-
-      function clearOverlays() {
-        if (googleMap.markers) {
-          for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
-            googleMap.markers[i].setMap(null);
-          }
-        }
-      }
-
-      function showOverlays() {
-        if (googleMap.markers) {
-          for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
-            googleMap.markers[i].setMap(map);
-          }
-        }
-      }
-
-      function deleteMarkers() {
-        if (googleMap.markers) {
-          googleMap.markers.pop().setMap(null);
-        }
-      }
-
-    } else {
-      console.log('no stored routes');
-      googleMap.routeList = [];
-    }
 
     googleMap.loadLocal();
     googleMap.loadFilters();
@@ -147,6 +99,12 @@
       googleMap.markers = [];
     });
   };
+
+  $('#delete').change(function() {
+    if ($('#delete').prop('clicked')) {
+      googleMap.markers.setMap(null);
+    }
+  });
 
   module.googleMap = googleMap;
 })(window);

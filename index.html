@@ -17,38 +17,21 @@
       <div id="map" style="height:600px;"></div>
       <input type="submit" id="submit"><br>
         <input id="mapall" type="checkbox" checked>Show markers</><br>
-        <input id="delete" type="button" onclick="deleteMarkers()" value="Delete last marker"></><br>
-      <input type="submit" id="submit"><br>
+        <input id="delete" type="button">Delete last marker</>
+      <input type="submit" id="submit">
       <button id="toggle">Toggle</button>
+      <div id="floating-panel">
+        <input onclick="clearMarkers();" type=button value="Hide Markers">
+        <input onclick="showMarkers();" type=button value="Show All Markers">
+        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+      </div>
       <div id="map"></div>
       <aside>
         <h4>Stats Template Here</h4>
         <section id="runRoute" class="tab-content">
           <ul id="filters">
             <li>
-              <select id="route-filter">
-                <option value="Choose your route!">Choose your route!</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-              </select>
-            </li>
-            <li>
-              <select id="route2-filter">
-                <option value="Compare routes">Compare routes</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
+
               <select class="route-filter" id="required">
                 <option>Routes</option>
               </select>
