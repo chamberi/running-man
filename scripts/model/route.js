@@ -16,11 +16,13 @@
       });
     });
   };
-  function selectRouteDisplay(num) {
+  function selectRouteDisplay(nums) {
     googleMap.rendererArray.forEach(function(ele){
       ele.setMap(null);
     });
-    googleMap.rendererArray[num].setMap(googleMap.map);
+    nums.forEach(function(num) {
+      googleMap.rendererArray[num].setMap(googleMap.map);
+    });
   };
 
   Route.renderRoutes = function(directions, map, which){
@@ -88,12 +90,10 @@
   };
 
 
-  Route.showRoute = function() {
-    var num = $('#route-filter').val();
-    selectRouteDisplay(num);
-    Route.renderRoutes(googleMap.directionsService, googleMap.map, '[' + num + ']');
+  Route.showRoute = function(nums) {
+    selectRouteDisplay(nums);
+    Route.renderRoutes(googleMap.directionsService, googleMap.map, nums);
   };
-
 
   Route.calcRoute = function(route, newRoute) {
 
