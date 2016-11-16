@@ -108,7 +108,11 @@
     });
   };
 
-  
+  $('#delete').change(function() {
+    if ($('#delete').prop('clicked')) {
+      googleMap.markers.setMap(null);
+    }
+  });
 
   module.googleMap = googleMap;
 })(window);
