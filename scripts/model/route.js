@@ -7,10 +7,10 @@
 
   Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
 
-  Route.renderRoutes = function(directions, map, which){
+  Route.renderRoutes = function(map, which){
     var routes = googleMap.getRequest(which);
     routes.forEach(function(route) {
-      directions.route(route.request,
+      googleMap.directionsService.route(route.request,
       function(response, status) {
         if (status === 'OK') {
           googleMap.rendererArray[route.id].setOptions({

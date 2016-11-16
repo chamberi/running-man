@@ -12,24 +12,11 @@
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain'
     });
-    googleMap.map = map;
-
     var directionsService = new google.maps.DirectionsService;
-
+    googleMap.map = map;
     googleMap.directionsService = directionsService;
-
-    if (localStorage.getItem('routes')) {
-      console.log('fetching routes');
-      googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
-      googleMap.routeList.forEach(function(el, idx){
-        googleMap.rendererArray.push(new google.maps.DirectionsRenderer());
-        googleMap.rendererArray[idx].setMap(map);
-      });
-    } else {
-      console.log('no stored routes');
-      googleMap.routeList = [];
-    }
-
+    googleMap.loadLocal();
+    googleMap.loadFilters();
     map.addListener('click', function(e) {
       googleMap.placeMarkerAndPanTo(e.latLng, map);
     });
@@ -45,11 +32,13 @@
       renderer.setMap(map);
       googleMap.rendererArray.push(renderer);
 
-      Route.renderRoutes(directionsService, map, [newRoute.id]);
+      Route.renderRoutes(map, [newRoute.id]);
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
     });
 
-
+    $('#toggle').on('click', function(){
+      $('aside').toggle('slide',{direction: 'right'}, 500);
+    });
   };
 
   googleMap.getRequest = function(which) {
@@ -59,6 +48,28 @@
       }
       return acc;
     }, []);
+  };
+
+  googleMap.loadLocal = function() {
+    if (localStorage.getItem('routes')) {
+      console.log('fetching routes');
+      googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
+      googleMap.routeList.forEach(function(el, idx){
+        googleMap.rendererArray.push(new google.maps.DirectionsRenderer());
+        googleMap.rendererArray[idx].setMap(googleMap.map);
+      });
+    } else {
+      console.log('no stored routes');
+      googleMap.routeList = [];
+    }
+  };
+
+  googleMap.loadFilters = function() {
+    googleMap.routeList.forEach(function(route) {
+      var template = $('#route-filter-template').html();
+      var templateRender = Handlebars.compile(template);
+      $('.route-filter').append(templateRender(route));
+    });
   };
 
   googleMap.placeMarkerAndPanTo = function(latLng, map) {
