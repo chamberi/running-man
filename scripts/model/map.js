@@ -27,12 +27,11 @@
         ele.setMap(null);
       });
       googleMap.markers = [];
-      Route.calcRoute(newRoute, true);
+      Route.initializeRoute(newRoute);
       var renderer = new google.maps.DirectionsRenderer();
       renderer.setMap(map);
       googleMap.rendererArray.push(renderer);
-
-      Route.renderRoutes(map, [newRoute.id - 1]);
+      Route.calcRoute(Route.renderRoute, [newRoute.id - 1]);
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
     });
 
@@ -55,7 +54,7 @@
   };
 
   googleMap.getRequest = function(which) {
-    console.log(which);
+    // console.log(which);
     return googleMap.routeList.reduce(function(acc, cur){
       if (which.includes(cur.id - 1)){
         acc.push(cur);
