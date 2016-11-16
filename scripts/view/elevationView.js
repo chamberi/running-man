@@ -22,11 +22,11 @@
       if (idx < elevations.length - 1) {
         nextIdx = idx + 1;
         if (elevations[nextIdx].elevation > cur.elevation) {
-          var dif = parseFloat((elevations[nextIdx].elevation - cur.elevation).toFixed(3));
+          var dif = parseFloat((elevations[nextIdx].elevation - cur.elevation).toFixed(2));
           acc += dif;
-          acc = parseFloat(acc.toFixed(3));
-          var miniDistance = parseFloat(google.maps.geometry.spherical.computeDistanceBetween (elevations[idx].location, elevations[nextIdx].location).toFixed(3));
-          hillData.push([dif, miniDistance, parseFloat((dif / miniDistance).toFixed(3))]);
+          acc = parseFloat(acc.toFixed(2));
+          var miniDistance = parseFloat(google.maps.geometry.spherical.computeDistanceBetween (elevations[idx].location, elevations[nextIdx].location).toFixed(2));
+          hillData.push([dif, miniDistance, parseFloat((dif / miniDistance).toFixed(2))]);
         };
       };
       return acc;
@@ -37,7 +37,7 @@
     })
     .reduce(function(acc, cur, idx) {
       acc += cur[1];
-      acc = parseFloat(acc.toFixed(3));
+      acc = parseFloat(acc.toFixed(2));
       return acc;
 
     }, 0);
