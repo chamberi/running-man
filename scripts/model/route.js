@@ -7,10 +7,22 @@
 
   Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
 
-  selectRouteDisplay = function() {
-    googleMap.markers.forEach(function(ele){
-      ele.setMap(null);
+  function grabMarkers(){
+    googleMap.routeList.map(function(i){
+      console.log(i.markers);
+      console.log(googleMap.routeList);
+      return i.markers;
     });
+  };
+  function selectRouteDisplay() {
+    //     function setMapOnAll(map) {
+    //       for (var i = 0; i < grabMarkers().length; i++) {
+    //         grabMarkers()[i].setMap(map);
+    //       }
+    //     }
+    // console.log(googleMap.routeList);
+    // setMapOnAll(null);
+    console.log('fin');
     $('#route-filter').on('change', function() {
       Route.testAll();
     });
