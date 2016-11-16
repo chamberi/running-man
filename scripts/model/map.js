@@ -3,6 +3,16 @@
   var googleMap = {};
   googleMap.markers = [];
   googleMap.rendererArray = [];
+
+  function computeTotalDistance(result) {
+    var total = 0;
+    var myroute = result.routes[0];
+    for (var i = 0; i < myroute.legs.length; i++) {
+      total += myroute.legs[i].distance.value;
+    }
+    total = total / 1000;
+    console.log(total);
+  }
   googleMap.initMap = function() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -12,6 +22,11 @@
     });
 
     var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer({
+      draggable: true,
+      map: map,
+    });
+
     googleMap.map = map;
     googleMap.directionsService = directionsService;
 
@@ -28,13 +43,18 @@
       });
       googleMap.markers = [];
       Route.calcRoute(newRoute, true);
-      var renderer = new google.maps.DirectionsRenderer();
+      var renderer = directionsDisplay;
       renderer.setMap(map);
       googleMap.rendererArray.push(renderer);
 
       Route.renderRoutes(map, [newRoute.id - 1]);
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
+      renderer.addListener('directions_changed', function() {
+        console.log('changed');
+        computeTotalDistance(directionsDisplay.getDirections());
+      });
     });
+
 
     $('#toggle').on('click', function(){
       $('aside').toggle('slide',{direction: 'right'}, 500);
@@ -66,11 +86,21 @@
 
   googleMap.loadLocal = function() {
     if (localStorage.getItem('routes')) {
+
       console.log('fetching routes');
       googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
       googleMap.routeList.forEach(function(el, idx){
-        googleMap.rendererArray.push(new google.maps.DirectionsRenderer());
+        googleMap.rendererArray.push(new google.maps.DirectionsRenderer({
+          draggable: true,
+          map: map,
+        })
+      );
         googleMap.rendererArray[idx].setMap(googleMap.map);
+        googleMap.rendererArray[idx].addListener('directions_changed', function() {
+          console.log('changed');
+          computeTotalDistance(googleMap.rendererArray[idx].getDirections());
+        });
+
       });
     } else {
       console.log('no stored routes');
