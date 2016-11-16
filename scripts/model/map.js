@@ -11,7 +11,6 @@
       mapTypeId: 'terrain'
     });
 
-
     googleMap.map = map;
 
 
@@ -50,6 +49,12 @@
           for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
             googleMap.markers[i].setMap(map);
           }
+        }
+      }
+
+      function deleteMarkers() {
+        if (googleMap.markers) {
+          googleMap.markers.pop().setMap(null);
         }
       }
 
@@ -142,12 +147,6 @@
       googleMap.markers = [];
     });
   };
-
-  $('#delete').change(function() {
-    if ($('#delete').prop('clicked')) {
-      googleMap.markers.setMap(null);
-    }
-  });
 
   module.googleMap = googleMap;
 })(window);
