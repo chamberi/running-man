@@ -10,12 +10,27 @@ aside {
   right: 10px;
   display: inline-block;
   background-color: white;
-  border: solid 1px black;
+  border: solid 2px black;
   font-size: 12px;
-  height: 400px;
-  width: 150px;
+  height: 600px;
+  width: 200px;
+  border-radius: 10px;
+  padding: 10px;
 }
 
-aside h4 {
-  text-align: center;
+aside h3 {
+  margin-top: 8px;
+}
+
+aside li {
+  list-style: none;
+}
+
+#stats-comparison {
+  font-size: 12px;
+}
+
+aside p, h3 {
+  padding: 0;
+  margin: 2px;
 }
