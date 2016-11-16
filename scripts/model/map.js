@@ -3,8 +3,6 @@
   var googleMap = {};
   googleMap.markers = [];
   googleMap.rendererArray = [];
-
-
   googleMap.initMap = function() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -12,9 +10,59 @@
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain'
     });
+
+    googleMap.map = map;
+
+
     var directionsService = new google.maps.DirectionsService;
     googleMap.map = map;
     googleMap.directionsService = directionsService;
+
+
+    if (localStorage.getItem('routes')) {
+      console.log('fetching routes');
+      googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
+      googleMap.routeList.forEach(function(el, idx){
+        googleMap.rendererArray.push(new google.maps.DirectionsRenderer());
+        googleMap.rendererArray[idx].setMap(map);
+      });
+
+      $('#mapall').change(function() {
+        if( $('#mapall').prop('checked')) {
+          showOverlays();
+        }
+        else {
+          clearOverlays();
+        }
+      });
+
+      function clearOverlays() {
+        if (googleMap.markers) {
+          for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
+            googleMap.markers[i].setMap(null);
+          }
+        }
+      }
+
+      function showOverlays() {
+        if (googleMap.markers) {
+          for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
+            googleMap.markers[i].setMap(map);
+          }
+        }
+      }
+
+      function deleteMarkers() {
+        if (googleMap.markers) {
+          googleMap.markers.pop().setMap(null);
+        }
+      }
+
+    } else {
+      console.log('no stored routes');
+      googleMap.routeList = [];
+    }
+
     googleMap.loadLocal();
     googleMap.loadFilters();
     map.addListener('click', function(e) {
@@ -92,9 +140,12 @@
       draggable: true,
       map: map
     });
-
     googleMap.markers.push(marker);
     map.panTo(latLng);
+    marker.addListener('dblclick', function() {
+      marker.setMap(null);
+      googleMap.markers = [];
+    });
   };
 
   module.googleMap = googleMap;
