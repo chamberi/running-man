@@ -11,7 +11,7 @@
       total += myroute.legs[i].distance.value;
     }
     total = total / 1000;
-  console.log(total);
+    console.log(total);
   }
   googleMap.initMap = function() {
 
@@ -20,6 +20,7 @@
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain'
     });
+
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
@@ -28,6 +29,7 @@
 
     googleMap.map = map;
     googleMap.directionsService = directionsService;
+
     googleMap.loadLocal();
     googleMap.loadFilters();
     map.addListener('click', function(e) {
@@ -120,10 +122,19 @@
       draggable: true,
       map: map
     });
-
     googleMap.markers.push(marker);
     map.panTo(latLng);
+    marker.addListener('dblclick', function() {
+      marker.setMap(null);
+      googleMap.markers = [];
+    });
   };
+
+  $('#delete').change(function() {
+    if ($('#delete').prop('clicked')) {
+      googleMap.markers.setMap(null);
+    }
+  });
 
   module.googleMap = googleMap;
 })(window);
