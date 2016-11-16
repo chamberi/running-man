@@ -24,7 +24,7 @@
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
-      map: map,
+      map: googleMap.map,
     });
 
     googleMap.map = map;
@@ -33,7 +33,7 @@
     googleMap.loadLocal();
     googleMap.loadFilters();
     map.addListener('click', function(e) {
-      googleMap.placeMarkerAndPanTo(e.latLng, map);
+      googleMap.placeMarkerAndPanTo(e.latLng);
     });
 
     document.getElementById('submit').addEventListener('click', function() {
@@ -42,12 +42,12 @@
         ele.setMap(null);
       });
       googleMap.markers = [];
-      Route.calcRoute(newRoute, true);
+      Route.initializeRoute(newRoute);
+      var renderer = new google.maps.DirectionsRenderer();
       var renderer = directionsDisplay;
       renderer.setMap(map);
       googleMap.rendererArray.push(renderer);
-
-      Route.renderRoutes(map, [newRoute.id - 1]);
+      Route.calcRoute(Route.renderRoute, [newRoute.id - 1]);
       localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
       renderer.addListener('directions_changed', function() {
         console.log('changed');
@@ -75,7 +75,7 @@
   };
 
   googleMap.getRequest = function(which) {
-    console.log(which);
+    // console.log(which);
     return googleMap.routeList.reduce(function(acc, cur){
       if (which.includes(cur.id - 1)){
         acc.push(cur);
@@ -92,7 +92,7 @@
       googleMap.routeList.forEach(function(el, idx){
         googleMap.rendererArray.push(new google.maps.DirectionsRenderer({
           draggable: true,
-          map: map,
+          map: googleMap.map
         })
       );
         googleMap.rendererArray[idx].setMap(googleMap.map);
@@ -116,14 +116,14 @@
     });
   };
 
-  googleMap.placeMarkerAndPanTo = function(latLng, map) {
+  googleMap.placeMarkerAndPanTo = function(latLng) {
     var marker = new google.maps.Marker({
       position: latLng,
       draggable: true,
-      map: map
+      map: googleMap.map
     });
     googleMap.markers.push(marker);
-    map.panTo(latLng);
+    googleMap.map.panTo(latLng);
     marker.addListener('dblclick', function() {
       marker.setMap(null);
       googleMap.markers = [];
