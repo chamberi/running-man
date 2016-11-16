@@ -54,19 +54,23 @@
       googleMap.directionsService.route(route.request,
       function(response, status) {
         if (status === 'OK') {
-          // googleMap.rendererArray[route.id - 1].setOptions({
-          //   preserveViewport: true,
-          //   suppressInfoWindows: true,
-          //   polylineOptions: {
-          //     strokeWeight: 4,
-          //     strokeOpacity: .8,
-          //     strokeColor: Route.colors[route.id]
-          //   }
-          // });
+          googleMap.rendererArray[route.id - 1].setOptions({
+            preserveViewport: true,
+            suppressInfoWindows: true,
+            draggable:true,
+            ediable:true,
+            polylineOptions: {
+              strokeWeight: 4,
+              strokeOpacity: .8,
+              strokeColor: Route.colors[route.id]
+            }
+          });
           console.log(response);
           googleMap.rendererArray[route.id - 1].setDirections(response);
           var responseRoute = response.routes[0];
           Route.countDistance(responseRoute, route);
+          console.log(responseRoute);
+          console.log(route);
           var elevator = new google.maps.ElevationService;
           var detailedPath = responseRoute.overview_path.map(function(point) {
             return {
