@@ -17,19 +17,25 @@
       <div id="map" style="height:600px;"></div>
       <input type="submit" id="submit">
       <button id="toggle">Toggle</button>
+      <div id="floating-panel">
+        <input onclick="clearMarkers();" type=button value="Hide Markers">
+        <input onclick="showMarkers();" type=button value="Show All Markers">
+        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+      </div>
+      <div id="map"></div>
       <aside>
         <h4>Stats Template Here</h4>
         <section id="runRoute" class="tab-content">
         <div>
           <ul id="filters">
             <li>
-              <select class="route-filter">
-                <option value="">Routes</option>
+              <select class="route-filter" id="required">
+                <option>Routes</option>
               </select>
             </li>
             <li>
-              <select class="route-filter">
-                <option value="">Compare</option>
+              <select class="route-filter" id="compare">
+                <option>Compare</option>
               </select>
             </li>
           </ul>
@@ -51,7 +57,7 @@
       <!-- <script src="scripts/view/statsBar.js"></script> -->
 
       <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDULz6eDciWw-YnOdMAw4FAiZajDWxUAas&callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDULz6eDciWw-YnOdMAw4FAiZajDWxUAas&callback=initMap&sensor=false&v=3&libraries=geometry">
       </script>
     </div>
   </body>

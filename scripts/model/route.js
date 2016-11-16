@@ -1,11 +1,31 @@
 (function(module) {
 
   function Route(markers, map){
-    this.id = googleMap.routeList.length;
+    this.id = googleMap.routeList.length + 1;
     this.markers = markers;
+    googleMap.routeList.push(this);
   };
 
   Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
+
+
+  function grabMarkers(){
+    console.log(typeof googleMap.routeList);
+    return googleMap.routeList.map(function(i){
+      return new google.maps.Marker({
+        location: i.markers.location,
+        map: googleMap.map
+      });
+    });
+  };
+  function selectRouteDisplay(which) {
+    googleMap.rendererArray.forEach(function(ele){
+      ele.setMap(null);
+    });
+    which.forEach(function(num) {
+      googleMap.rendererArray[num].setMap(googleMap.map);
+    });
+  };
 
   Route.renderRoutes = function(map, which){
     var routes = googleMap.getRequest(which);
@@ -13,17 +33,17 @@
       googleMap.directionsService.route(route.request,
       function(response, status) {
         if (status === 'OK') {
-          googleMap.rendererArray[route.id].setOptions({
-            preserveViewport: true,
-            suppressInfoWindows: true,
-            polylineOptions: {
-              strokeWeight: 4,
-              strokeOpacity: .8,
-              strokeColor: Route.colors[route.id]
-            }
-          });
-          console.log(googleMap.rendererArray[route.id]);
-          googleMap.rendererArray[route.id].setDirections(response);
+          // googleMap.rendererArray[route.id - 1].setOptions({
+          //   preserveViewport: true,
+          //   suppressInfoWindows: true,
+          //   polylineOptions: {
+          //     strokeWeight: 4,
+          //     strokeOpacity: .8,
+          //     strokeColor: Route.colors[route.id]
+          //   }
+          // });
+          console.log(response);
+          googleMap.rendererArray[route.id - 1].setDirections(response);
           var responseRoute = response.routes[0];
           var elevator = new google.maps.ElevationService;
           var detailedPath = responseRoute.overview_path.map(function(point) {
@@ -32,7 +52,7 @@
               lng: point.lng()
             };
           });
-          elevationsView.displayPathElevation(detailedPath, elevator, map);
+          elevationsView.displayPathElevation(detailedPath, elevator, map, route);
 
           var summaryPanel = document.getElementById('directions-panel');
           summaryPanel.innerHTML = '';
@@ -71,11 +91,14 @@
     });
   };
 
-  Route.testAll = function() {
-    Route.renderRoutes(googleMap.directionsService, googleMap.map, [0,1,2,3]);
+
+  Route.showRoute = function(which) {
+    selectRouteDisplay(which);
+    Route.renderRoutes(googleMap.map, which);
   };
 
-  Route.calcRoute = function(route) {
+  Route.calcRoute = function(route, newRoute) {
+
     var len = route.markers.length;
     var path = route.markers.map(function(marker){
       return {
@@ -86,18 +109,16 @@
 
     route.request = {
       origin: {lat: path[0].location.lat,
-              lng: path[0].location.lng},
+            lng: path[0].location.lng},
       destination: {lat: path[len - 1].location.lat,
-                  lng: path[len - 1].location.lng},
+                lng: path[len - 1].location.lng},
       waypoints: path.slice(1,len-1),
       optimizeWaypoints: true,
       travelMode: 'WALKING'
     };
 
     route.markers = path;
-    googleMap.routeList.push(route);
 
   };
-
   module.Route = Route;
 })(window);
