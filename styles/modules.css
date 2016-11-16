@@ -6,14 +6,14 @@
 aside {
   z-index: 1;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0px;
+  right: 0px;
   display: inline-block;
   background-color: white;
-  border: solid 2px black;
-  font-size: 12px;
-  height: 600px;
-  width: 200px;
+  border: solid 1px darkgray;
+  font-size: 16px;
+  height: 60%;
+  width: 20%;
   border-radius: 10px;
   padding: 10px;
 }

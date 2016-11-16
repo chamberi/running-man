@@ -1,11 +1,13 @@
 (function(module) {
 
   function Route(markers, map){
-    this.id = googleMap.routeList.length;
+    this.id = googleMap.routeList.length + 1;
     this.markers = markers;
+    googleMap.routeList.push(this);
   };
 
   Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
+
 
   function grabMarkers(){
     console.log(typeof googleMap.routeList);
@@ -16,21 +18,22 @@
       });
     });
   };
-  function selectRouteDisplay(nums) {
+  function selectRouteDisplay(which) {
     googleMap.rendererArray.forEach(function(ele){
       ele.setMap(null);
     });
     $('#stats-comparison').text('');
-    nums.forEach(function(num) {
+    which.forEach(function(num) {
       googleMap.rendererArray[num].setMap(googleMap.map);
       var tic = num + 1;
       var statsRenderer = $('#stats-comparison');
       statsRenderer.append('<h3>Route ' + tic + '</h3>');
-      statsRenderer.append('<p>Total Distance: ' + googleMap.routeList[num].totalDistance + 'km</p>');
+      statsRenderer.append('<p>Total Distance: ' + googleMap.routeList[num].totalDistance + ' km</p>');
       statsRenderer.append('<p>Distance > 10%: ' + googleMap.routeList[num].steepDistance + ' m</p>');
       statsRenderer.append('<p>Elevation Gain: ' + googleMap.routeList[num].totalGain + ' m</p>');
     });
   };
+
 
   Route.countDistance = function(responseRoute, route) {
     var runDistanceArray = responseRoute.legs.map(function(curr){
@@ -45,14 +48,13 @@
     route.totalDistance = totalDistanceCount / 1000;
   };
 
-
-  Route.renderRoutes = function(directions, map, which){
+  Route.renderRoutes = function(map, which){
     var routes = googleMap.getRequest(which);
     routes.forEach(function(route) {
-      directions.route(route.request,
+      googleMap.directionsService.route(route.request,
       function(response, status) {
         if (status === 'OK') {
-          // googleMap.rendererArray[route.id].setOptions({
+          // googleMap.rendererArray[route.id - 1].setOptions({
           //   preserveViewport: true,
           //   suppressInfoWindows: true,
           //   polylineOptions: {
@@ -62,7 +64,7 @@
           //   }
           // });
           console.log(response);
-          googleMap.rendererArray[route.id].setDirections(response);
+          googleMap.rendererArray[route.id - 1].setDirections(response);
           var responseRoute = response.routes[0];
           Route.countDistance(responseRoute, route);
           var elevator = new google.maps.ElevationService;
@@ -113,9 +115,9 @@
   };
 
 
-  Route.showRoute = function(nums) {
-    selectRouteDisplay(nums);
-    Route.renderRoutes(googleMap.directionsService, googleMap.map, nums);
+  Route.showRoute = function(which) {
+    selectRouteDisplay(which);
+    Route.renderRoutes(googleMap.map, which);
   };
 
   Route.calcRoute = function(route, newRoute) {
@@ -139,7 +141,6 @@
     };
 
     route.markers = path;
-    googleMap.routeList.push(route);
 
   };
 

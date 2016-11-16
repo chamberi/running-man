@@ -6,10 +6,7 @@
     <title>Ma maps</title>
     <script src="https://www.google.com/jsapi"></script>
     <script id="route-filter-template" type="text/x-handlebars-template">
-      <option value="{{runRouteList}}">{{runRouteList}}</option>
-    </script>
-    <script id="route2-filter-template" type="text/x-handlebars-template">
-      <option value="{{run2RouteList}}">{{run2RouteList}}</option>
+      <option value="{{id}}">{{id}}</option>
     </script>
     <link href="styles/base.css" rel="stylesheet">
     <link href="styles/layout.css" rel="stylesheet">
@@ -19,6 +16,7 @@
     <div>
       <div id="map" style="height:600px;"></div>
       <input type="submit" id="submit">
+      <button id="toggle">Toggle</button>
       <div id="floating-panel">
         <input onclick="clearMarkers();" type=button value="Hide Markers">
         <input onclick="showMarkers();" type=button value="Show All Markers">
@@ -30,27 +28,13 @@
         <section id="runRoute" class="tab-content">
           <ul id="filters">
             <li>
-              <select id="route-filter">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
+              <select class="route-filter" id="required">
+                <option>Routes</option>
               </select>
             </li>
             <li>
-              <select id="route2-filter">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
+              <select class="route-filter" id="compare">
+                <option>Compare</option>
               </select>
             </li>
           </ul>
@@ -62,9 +46,9 @@
       <div id="directions-panel"></div>
       <div id="elevation_chart"></div>
 
-
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-      <script src="/vendor/handlebars.js"></script>
+      <script src="vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+      <script src="vendor/handlebars.js"></script>
       <script src="scripts/model/map.js"></script>
       <script src="scripts/model/route.js"></script>
       <!-- <script src="scripts/view/mapView.js"></script> -->
