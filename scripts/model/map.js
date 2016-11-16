@@ -3,8 +3,6 @@
   var googleMap = {};
   googleMap.markers = [];
   googleMap.rendererArray = [];
-
-
   googleMap.initMap = function() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -12,6 +10,7 @@
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain'
     });
+
     googleMap.map = map;
 
     var directionsService = new google.maps.DirectionsService;
@@ -25,6 +24,32 @@
         googleMap.rendererArray.push(new google.maps.DirectionsRenderer());
         googleMap.rendererArray[idx].setMap(map);
       });
+
+      $('#mapall').change(function() {
+        if( $('#mapall').prop('checked')) {
+          showOverlays();
+        }
+        else {
+          clearOverlays();
+        }
+      });
+
+      function clearOverlays() {
+        if (googleMap.markers) {
+          for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
+            googleMap.markers[i].setMap(null);
+          }
+        }
+      }
+
+      function showOverlays() {
+        if (googleMap.markers) {
+          for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
+            googleMap.markers[i].setMap(map);
+          }
+        }
+      }
+
     } else {
       console.log('no stored routes');
       googleMap.routeList = [];
@@ -75,10 +100,15 @@
       draggable: true,
       map: map
     });
-
     googleMap.markers.push(marker);
     map.panTo(latLng);
+    marker.addListener('dblclick', function() {
+      marker.setMap(null);
+      googleMap.markers = [];
+    });
   };
+
+  
 
   module.googleMap = googleMap;
 })(window);

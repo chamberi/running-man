@@ -18,11 +18,9 @@
   <body>
     <div>
       <div id="map" style="height:600px;"></div>
-      <input type="submit" id="submit">
-      <div id="floating-panel">
-        <input onclick="clearMarkers();" type=button value="Hide Markers">
-        <input onclick="showMarkers();" type=button value="Show All Markers">
-        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+      <input type="submit" id="submit"><br>
+        <input id="mapall" type="checkbox" checked>Show markers</><br>
+        <input id="delete" type="button">Delete last marker</>
       </div>
       <div id="map"></div>
       <aside>
@@ -32,6 +30,7 @@
           <ul id="filters">
             <li>
               <select id="route-filter">
+                <option value="Choose your route!">Choose your route!</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -44,6 +43,7 @@
             </li>
             <li>
               <select id="route2-filter">
+                <option value="Compare routes">Compare routes</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
