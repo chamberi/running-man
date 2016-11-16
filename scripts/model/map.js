@@ -50,9 +50,14 @@
     });
 
     $('#route-filter').on('change', function() {
-      Route.showRoute();
+      var num = $('#route-filter').val() - 1;
+      Route.showRoute([num]);
     });
-
+    $('#route2-filter').on('change', function() {
+      var num = $('#route-filter').val() - 1;
+      var num2 = $('#route2-filter').val() - 1;
+      Route.showRoute([num , num2]);
+    });
   };
 
   googleMap.getRequest = function(which) {
