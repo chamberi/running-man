@@ -17,6 +17,8 @@
     <section class="site-info">
       <header>
       Running Man
+      <nav> <a href="aboutUs.html">About us</a>
+      </nav>
       </header>
       <section class="top">
       </section>
@@ -29,7 +31,8 @@
       <input type="submit" id="submit"><br>
         <input id="mapall" type="checkbox" checked>Show markers</><br>
         <input id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"></><br>
-      <button id="toggle">Toggle</button>
+      <button id="toggle">Toggle</button><br>
+      <button id="clear">Clear local storage</button>
       <div id="map">
       <aside>
         <h4>Stats Template Here</h4>
@@ -52,16 +55,6 @@
         </section>
       </aside>
     </div>
-      <input type="submit" id="submit"><br>
-        <input id="mapall" type="checkbox" checked>Show markers</><br>
-        <input id="delete" type="button">Delete last marker</>
-      <input type="submit" id="submit">
-      <button id="toggle">Toggle</button>
-      <div id="floating-panel">
-        <input onclick="clearMarkers();" type=button value="Hide Markers">
-        <input onclick="showMarkers();" type=button value="Show All Markers">
-        <input onclick="deleteMarkers();" type=button value="Delete Markers">
-      </div>
       <!-- <div id="map"></div> -->
       <div id="total-distance"></div>
       <div id="directions-panel"></div>

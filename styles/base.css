@@ -4,6 +4,12 @@ html, body {
   padding: 0;
 }
 
+nav {
+  z-index: 2;
+  float: left;
+  font-size: 20px;
+}
+
 li {
   list-style: none;
 }
