@@ -3,16 +3,9 @@
   var googleMap = {};
   googleMap.markers = [];
   googleMap.rendererArray = [];
+  googleMap.routeResponses = [];
+  googleMap.activeIndexes = [];
 
-  function computeTotalDistance(result) {
-    var total = 0;
-    var myroute = result.routes[0];
-    for (var i = 0; i < myroute.legs.length; i++) {
-      total += myroute.legs[i].distance.value;
-    }
-    total = total / 1000;
-    console.log(total);
-  }
 
   googleMap.initMap = function() {
 
@@ -22,13 +15,15 @@
       mapTypeId: 'terrain'
     });
 
-    $('#mapall').change(function() {
-      if( $('#mapall').prop('checked')) {
-        showOverlays();
-      }
-      else {
-        clearOverlays();
-      }
+    $('#showMarkers').click(function() {
+      $('#hideMarkers').show();
+      $('#showMarkers').hide();
+      showOverlays();
+    });
+    $('#hideMarkers').click(function(){
+      $('#showMarkers').show();
+      $('#hideMarkers').hide();
+      clearOverlays();
     });
 
     function clearOverlays() {
@@ -67,7 +62,6 @@
     googleMap.directionsService = directionsService;
 
     googleMap.loadLocal();
-    googleMap.loadFilters();
     map.addListener('click', function(e) {
       googleMap.placeMarkerAndPanTo(e.latLng);
     });
@@ -78,36 +72,30 @@
         ele.setMap(null);
       });
       googleMap.markers = [];
-      Route.initializeRoute(newRoute);
       var renderer = new google.maps.DirectionsRenderer();
       var renderer = directionsDisplay;
-      renderer.setMap(map);
       googleMap.rendererArray.push(renderer);
-      Route.calcRoute(Route.renderRoute, [newRoute.id - 1]);
-      localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
-      renderer.addListener('directions_changed', function() {
-        console.log('changed');
-        computeTotalDistance(directionsDisplay.getDirections());
-      });
+      renderer.setMap(map);
+      googleMap.activeIndexes.push(newRoute.id - 1);
+      Route.queryRoute(newRoute, [googleMap.addFilter,Route.renderActive]);
+      // renderer.addListener('directions_changed', function() {
+      //   console.log('changed');
+      //   computeTotalDistance(directionsDisplay.getDirections());
+      // });
     });
 
 
-    $('#toggle').on('click', function(){
+    $('#toggleOn').on('click', function(){
+      $('#toggleOn').hide();
+      $('#toggleOff').show();
       $('aside').toggle('slide',{direction: 'right'}, 500);
     });
-    $('.route-filter').on('change', function() {
-      var req = $('#required').val();
-      var comp = $('#compare').val();
-      var which = [];
-      if (req !== 'Routes'){
-        which.push(req - 1);
-        if (comp !== 'Compare' && comp !== req) {
-          which.push(comp - 1);
-        }
-        console.log(which);
-        Route.showRoute(which);
-      }
+    $('#toggleOff').on('click', function(){
+      $('#toggleOn').show();
+      $('#toggleOff').hide();
+      $('aside').toggle('slide',{direction: 'right'}, 500);
     });
+
   };
 
   googleMap.getRequest = function(which) {
@@ -120,6 +108,10 @@
     }, []);
   };
 
+  googleMap.setLocal = function() {
+    localStorage.setItem('routes', JSON.stringify(googleMap.routeList));
+  };
+
   googleMap.loadLocal = function() {
     if (localStorage.getItem('routes')) {
 
@@ -129,14 +121,13 @@
         googleMap.rendererArray.push(new google.maps.DirectionsRenderer({
           draggable: true,
           map: googleMap.map
-        })
-      );
+        }));
+        Route.queryRoute(el, [googleMap.addFilter]);
         googleMap.rendererArray[idx].setMap(googleMap.map);
-        googleMap.rendererArray[idx].addListener('directions_changed', function() {
-          console.log('changed');
-          computeTotalDistance(googleMap.rendererArray[idx].getDirections());
-        });
-
+        // googleMap.rendererArray[idx].addListener('directions_changed', function() {
+        //   console.log('changed');
+        //   computeTotalDistance(googleMap.rendererArray[idx].getDirections());
+        // });
       });
     } else {
       console.log('no stored routes');
@@ -146,10 +137,29 @@
 
   googleMap.loadFilters = function() {
     googleMap.routeList.forEach(function(route) {
-      var template = $('#route-filter-template').html();
-      var templateRender = Handlebars.compile(template);
-      $('.route-filter').append(templateRender(route));
+      googleMap.addFilter(route);
     });
+  };
+
+  googleMap.addFilter = function(route) {
+    var template = $('#route-filter-template').html();
+    var templateRender = Handlebars.compile(template);
+    $('#route-filter').append(templateRender(route));
+    var $filter = $('#route-filter h3');
+    $filter.unbind();
+    $filter.click(function(event) {
+      var id = parseInt(event.target.id) - 1;
+      if (googleMap.activeIndexes.includes(id)){
+        googleMap.activeIndexes.splice(id,1);
+        googleMap.rendererArray[id].setMap(null);
+      } else {
+        googleMap.activeIndexes.push(id);
+        googleMap.rendererArray[id].setMap(googleMap.map);
+      }
+      Route.renderActive();
+      $(this).next().toggle('slow');
+      return false;
+    }).next().hide();
   };
 
   googleMap.placeMarkerAndPanTo = function(latLng) {

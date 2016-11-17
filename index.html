@@ -6,70 +6,103 @@
     <title>Ma maps</title>
     <script src="https://www.google.com/jsapi"></script>
     <script id="route-filter-template" type="text/x-handlebars-template">
-      <option value="{{id}}">{{id}}</option>
+      <h3 id="{{id}}">Route {{id}}</h3>
+      <div id="{{id}}">
+        <p>Total Distance: {{totalDistance}} km</p>
+        <p>Distance > 10%: {{steepDistance}} m</p>
+        <p>Elevation Gain: {{totalGain}} m</p>
+      </div>
     </script>
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
     <link href="styles/base.css" rel="stylesheet">
     <link href="styles/layout.css" rel="stylesheet">
     <link href="styles/modules.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
+    <script src="https://use.fontawesome.com/4da615f5e6.js"></script>
   </head>
   <body>
     <section class="site-info">
       <header>
-      Running Man
-      <nav> <a href="aboutUs.html">About us</a>
+        <nav> <a href="aboutUs.html">About us</a>
       </nav>
       </header>
       <section class="top">
+        <h1>RUNNING MAN</h1>
+        <h1>KNOW WHERE YOURE GOING</h1>
       </section>
       <section class="bottom">
-        <div class="button"><a class="map-button" href="#map"></a></div>
+        <div class="button"><a class="map-button" href="#map">START RUNNING</a></div>
       </section>
     </section>
     <div class="wrapper">
-      <div id="map" style="height:600px;"></div>
-      <input type="submit" id="submit"><br>
-        <input id="mapall" type="checkbox" checked>Show markers</><br>
-        <input id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"></><br>
-      <button id="toggle">Toggle</button><br>
-      <button id="clear">Clear routes</button>
-      <div id="map">
+      <div id="map" style="height:100vh;"></div>
       <aside>
-        <h4>Stats Template Here</h4>
-        <section id="runRoute" class="tab-content">
-          <ul id="filters">
-            <li>
+        <button id="slidetoggle">toggle</button>
+        <section id="statpanel">
+          <h2>Raptor</h2>
+          <section id="runRoute" class="tab-content">
+            <button id="clear">Clear routes</button>
+            <!-- <ul id="filters">
+              <li>
 
-              <select class="route-filter" id="required">
-                <option>Routes</option>
-              </select>
-            </li>
-            <li>
-              <select class="route-filter" id="compare">
-                <option>Compare</option>
-              </select>
-            </li>
-          </ul>
+                <select class="route-filter" id="required">
+                  <option>Routes</option>
+                </select>
+              </li>
+              <li>
+                <select class="route-filter" id="compare">
+                  <option>Compare</option>
+                </select>
+              </li>
+            </ul> -->
+
+            <section id="route-filter">
+            </section>
+          </section>
           <section id="stats-comparison">
           </section>
         </section>
       </aside>
+
+      <div class="map-bar">
+        <div class="map-nav-button" type="submit" id="submit"><span class="fa fa-check-circle fa-3x"></span></div><!--
+     --><div class="map-nav-button" id="showMarkers" type="checkbox" checked><span class="fa fa-eye fa-3x"></span></div><!--
+     --><div class="map-nav-button" id="hideMarkers" type="checkbox" checked><span class="fa fa-eye-slash fa-3x"></span></div><!--
+     --><div class="map-nav-button" id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"><span class="fa fa-minus-square fa-3x"></span></div><!--
+     --><div class="map-nav-button" id="toggleOn"><span class="fa fa-toggle-on fa-rotate-180 fa-3x"></span></div><!--
+   --><div class="map-nav-button" id="toggleOff"><span class="fa fa-toggle-off fa-rotate-180 fa-3x"></span></div>
+      </div>
     </div>
+      <!-- <input type="submit" id="submit"><br>
+        <input id="mapall" type="checkbox" checked>Show markers</><br>
+        <input id="delete" type="button">Delete last marker</>
+      <input type="submit" id="submit">
+      <button id="toggle">Toggle</button>
+      <div id="floating-panel">
+        <input onclick="clearMarkers();" type=button value="Hide Markers">
+        <input onclick="showMarkers();" type=button value="Show All Markers">
+        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+      </div> -->
       <!-- <div id="map"></div> -->
       <div id="total-distance"></div>
       <div id="directions-panel"></div>
       <div id="elevation_chart"></div>
-    </div>
 
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-      <script src="vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+
+
+      <script sync src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script src="vendor/jquery-ui-1.12.1/jquery-ui.min.js"></script>
       <script src="vendor/handlebars.js"></script>
       <script src="scripts/model/route.js"></script>
       <script src="scripts/model/map.js"></script>
       <script src="scripts/view/elevationView.js"></script>
+      <!-- <script src="scripts/view/mapView.js"></script> -->
       <script src="scripts/controllers/controller.js"></script>
+      <!-- <script src="scripts/view/statsBar.js"></script> -->
+
       <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDULz6eDciWw-YnOdMAw4FAiZajDWxUAas&callback=initMap&sensor=false&v=3&libraries=geometry">
       </script>
+    </div>
   </body>
 </html>
