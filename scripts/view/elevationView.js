@@ -11,7 +11,7 @@
     });
   };
 
-  elevationsView.calculateStats = function(path, route) {
+  elevationsView.calculateStats = function(path, route, callback) {
     var hillData = [];
     var elevator = new google.maps.ElevationService;
     elevator.getElevationAlongPath({
@@ -43,18 +43,21 @@
         return acc;
 
       }, 0);
-
+      callback(route);
     });
   };
 
-  elevationsView.plotElevation = function(elevations, status) {
-    var chartDiv = document.getElementById('elevation_chart');
+  elevationsView.plotElevation = function(elevations, status, routeId) {
+    var elevDiv = document.createElement('div');
+    $('#elevation_chart').append('<h4> Route ' + routeId + '</h4>');
+    $('#elevation_chart').append(elevDiv);
+
     if (status !== 'OK') {
       chartDiv.innerHTML = 'Cannot show elevation: request failed because ' +
           status;
       return;
     }
-    var chart = new google.visualization.ColumnChart(chartDiv);
+    var chart = new google.visualization.ColumnChart(elevDiv);
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Sample');
     data.addColumn('number', 'Elevation');
@@ -65,7 +68,7 @@
     chart.draw(data, {
       height: 150,
       legend: 'none',
-      titleY: 'Elevation (m)'
+      titleY: 'Elevation (m)',
     });
   };
 

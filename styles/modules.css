@@ -34,6 +34,7 @@ aside p, h3 {
   padding: 0;
   margin: 2px;
 }
+
 .button{
   height: 50px;
   text-align: center;
@@ -51,4 +52,9 @@ aside p, h3 {
   display: inline-block;
   width: 100%;
   height: 100%;
-}
+
+
+/*#elevation_chart h4 {
+  text-align: center;
+
+}*/

@@ -25,8 +25,13 @@
       </section>
     </section>
     <div class="wrapper">
-      <div id="map" style="height:600px;">
-      </div>
+      <div id="map" style="height:600px;"></div>
+      <input type="submit" id="submit"><br>
+        <input id="mapall" type="checkbox" checked>Show markers</><br>
+        <input id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"></><br>
+      <input type="submit" id="submit"><br>
+      <button id="toggle">Toggle</button>
+      <div id="map">
       <aside>
         <h4>Stats Template Here</h4>
         <section id="runRoute" class="tab-content">
@@ -47,6 +52,7 @@
           </section>
         </section>
       </aside>
+    </div>
       <input type="submit" id="submit"><br>
         <input id="mapall" type="checkbox" checked>Show markers</><br>
         <input id="delete" type="button">Delete last marker</>
@@ -61,6 +67,7 @@
       <div id="total-distance"></div>
       <div id="directions-panel"></div>
       <div id="elevation_chart"></div>
+    </div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
@@ -75,6 +82,5 @@
       <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDULz6eDciWw-YnOdMAw4FAiZajDWxUAas&callback=initMap&sensor=false&v=3&libraries=geometry">
       </script>
-    </div>
   </body>
 </html>

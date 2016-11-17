@@ -49,6 +49,7 @@
   };
 
   Route.calcRoute = function(callback, which) {
+    $('#elevation_chart').empty();
     var routes = googleMap.getRequest(which);
     routes.forEach(function(route) {
       googleMap.directionsService.route(route.request,
@@ -64,8 +65,7 @@
             });
             elevationsView.detailedPath = detailedPath;
             elevationsView.response = response;
-            elevationsView.calculateStats(detailedPath, route);
-            callback(route);
+            elevationsView.calculateStats(detailedPath, route, callback);
 
           } else {
             window.alert('Directions request failed due to ' + status);
@@ -103,7 +103,7 @@
     });
     googleMap.rendererArray[route.id - 1].setDirections(elevationsView.response);
     elevationsView.displayPathElevation(elevationsView.detailedPath);
-    elevationsView.plotElevation(elevationsView.elevations, elevationsView.status);
+    elevationsView.plotElevation(elevationsView.elevations, elevationsView.status, route.id);
   };
 
 
