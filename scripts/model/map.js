@@ -48,6 +48,10 @@
       };
     });
 
+    $('#clear').on('click', function() {
+      localStorage.clear();
+    });
+
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,

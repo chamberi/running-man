@@ -1,0 +1,141 @@
+* {
+    max-width: 90%;
+    margin: auto;
+}
+
+h1 {
+    font-size: 3.5em;
+    background-color: darkgray;
+    text-align: center;
+    border-radius: 1em;
+    max-width: 60%;
+    font-family: 'Righteous', sans-serif;
+    margin-bottom: .5em;
+    background-image: url(http://wallpapercave.com/wp/s7R41PL.jpg);
+    color: black;
+}
+
+body {
+    width: 700px;
+    height: 100%;
+    background-color: #2ccc7f;
+    color: #fff;
+    font-family: 'Righteous', sans-serif;
+    margin: 0 auto;
+    text-align: left;
+    text-shadow: black 1px 1px;
+    font-size: 1.2em;
+}
+
+img {
+    border-radius: 1em;
+}
+
+#one {
+    /*float: right;*/
+    box-shadow: 5px 5px 3px #888888;
+    max-width: 15em;
+    max-height: 15em;
+}
+
+#two {
+    /*float: left;*/
+    box-shadow: 5px 5px 3px #888888;
+    margin: .3em;
+    max-width: 15em;
+    max-height: 15em;
+}
+
+#three {
+    /*float: right;*/
+    box-shadow: 5px 5px 3px #888888;
+    max-width: 15em;
+    max-height: 15em;
+}
+
+#four {
+    /*float: left;*/
+    box-shadow: 5px 5px 3px #888888;
+    margin: .3em;
+    max-width: 15em;
+    max-height: 15em;
+}
+
+#five {
+    max-width: 5em;
+    max-height: 5em;
+    display: inline-block;
+    position: relative;
+}
+
+img:hover {
+    background-color: darkgray;
+}
+
+p {
+    padding: 1em;
+    font-size: 1em;
+    max-width: 75%;
+    margin: 1em;
+    border: 2px solid #C5C3C6;
+    border-radius: 20px;
+    background-color: #46494C;
+    width: 700px;
+    box-shadow: 5px 10px 20px black;
+    transition-property: background;
+    transition-duration: 1s;
+    transition-timing-function: linear;
+    animation-duration: 2.3s;
+    animation-name: slidein;
+}
+
+p:hover {
+    background-color: cyan;
+    z-index: -1;
+    color: white;
+}
+
+nav {
+  font-size: 20px;
+  float: left;
+  text-decoration: none;
+}
+
+nav:hover {
+  text-decoration: none;
+}
+
+footer {
+    background-color: darkgray;
+    text-align: center;
+    font-size: 1.2em;
+    border-radius: 1em;
+    max-width: 60%;
+    margin-top: 3em;
+    background: linear-gradient(20deg, green, silver);
+}
+
+
+@media (min-width:320px) {
+    /* smartphones, iPhone, portrait 480x320 phones */
+}
+
+@media (min-width:481px) {
+    /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+}
+
+@media (min-width:641px) {
+    /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+}
+
+@media (min-width:961px) {
+    /* tablet, landscape iPad, lo-res laptops ands desktops */
+}
+
+@media (min-width:1025px) {
+    /* big landscape tablets, laptops, and desktops */
+}
+
+@media (min-width:1281px) {
+    /* hi-res laptops and desktops */
+}
