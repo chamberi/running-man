@@ -22,13 +22,15 @@
       mapTypeId: 'terrain'
     });
 
-    $('#mapall').change(function() {
-      if( $('#mapall').prop('checked')) {
-        showOverlays();
-      }
-      else {
-        clearOverlays();
-      }
+    $('#showMarkers').click(function() {
+      $('#hideMarkers').show();
+      $('#showMarkers').hide();
+      showOverlays();
+    });
+    $('#hideMarkers').click(function(){
+      $('#showMarkers').show();
+      $('#hideMarkers').hide();
+      clearOverlays();
     });
 
     function clearOverlays() {
@@ -88,7 +90,14 @@
     });
 
 
-    $('#toggle').on('click', function(){
+    $('#toggleOn').on('click', function(){
+      $('#toggleOn').hide();
+      $('#toggleOff').show();
+      $('aside').toggle('slide',{direction: 'right'}, 500);
+    });
+    $('#toggleOff').on('click', function(){
+      $('#toggleOn').show();
+      $('#toggleOff').hide();
       $('aside').toggle('slide',{direction: 'right'}, 500);
     });
     $('.route-filter').on('change', function() {
