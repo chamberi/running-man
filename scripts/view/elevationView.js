@@ -1,6 +1,7 @@
 (function(module){
 
   var elevationsView = {};
+  elevationsView.elevationsList = [];
 
   elevationsView.displayPathElevation = function(path) {
     new google.maps.Polyline({
@@ -11,15 +12,16 @@
     });
   };
 
-  elevationsView.calculateStats = function(path, route, callback) {
+  elevationsView.calculateStats = function(route, callback) {
+    var path = route.detailedPath;
     var hillData = [];
     var elevator = new google.maps.ElevationService;
     elevator.getElevationAlongPath({
       'path': path,
       'samples': 256
-    }, function(elevations, status){
-      elevationsView.elevations = elevations;
-      elevationsView.status = status;
+    }, function(elevations, status) {
+      elevationsView.elevationsList[route.id - 1] = elevations;
+      // elevationsView.status = status;
       route.totalGain = elevations.reduce(function(acc, cur, idx) {
         if (idx < elevations.length - 1) {
           nextIdx = idx + 1;
@@ -43,13 +45,19 @@
         return acc;
 
       }, 0);
-      callback(route);
+      if (callback) {
+        callback[0](route);
+        if (callback[1]) {
+          callback[1]();
+        }
+      }
     });
   };
 
-  elevationsView.plotElevation = function(elevations, status, routeId) {
+  elevationsView.plotElevation = function(status, route) {
     var elevDiv = document.createElement('div');
-    $('#elevation_chart').append('<h4> Route ' + routeId + '</h4>');
+    var elevations = elevationsView.elevationsList[route.id - 1];
+    $('#elevation_chart').append('<h4> Route ' + route.id + '</h4>');
     $('#elevation_chart').append(elevDiv);
 
     if (status !== 'OK') {

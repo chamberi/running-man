@@ -1,0 +1,31 @@
+.site-info{
+  height: 100vh;
+  background-image: url("../imgs/bridge.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.wrapper{
+  position: relative;
+}
+header{
+  height:75px;
+  text-align: center;
+  line-height: 75px;
+  font-size: 2em;
+}
+.top{
+  height: 50%;
+  /*background-color: purple;*/
+  position: relative;
+  text-align: center;
+}
+.bottom{
+  height: 50%;
+  /*background-color: white;*/
+  position: relative;
+  text-align: center;
+}
+#map{
+  height: 100vh;
+  width: 100%;
+}
