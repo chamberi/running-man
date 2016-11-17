@@ -1,0 +1,24 @@
+.site-info{
+  height: 100vh;
+}
+.wrapper{
+  position: relative;
+}
+header{
+  height:75px;
+  text-align: center;
+  line-height: 75px;
+  font-size: 2em;
+}
+.top{
+  height: 65%;
+  background-color: purple;
+  position: relative;
+  text-align: center;
+}
+.bottom{
+  height: 25%;
+  background-color: white;
+  position: relative;
+  text-align: center;
+}

@@ -11,21 +11,22 @@
     <link href="styles/base.css" rel="stylesheet">
     <link href="styles/layout.css" rel="stylesheet">
     <link href="styles/modules.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
   </head>
   <body>
-    <div>
-      <div id="map" style="height:600px;"></div>
-      <input type="submit" id="submit"><br>
-        <input id="mapall" type="checkbox" checked>Show markers</><br>
-        <input id="delete" type="button">Delete last marker</>
-      <input type="submit" id="submit">
-      <button id="toggle">Toggle</button>
-      <div id="floating-panel">
-        <input onclick="clearMarkers();" type=button value="Hide Markers">
-        <input onclick="showMarkers();" type=button value="Show All Markers">
-        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+    <section class="site-info">
+      <header>
+      Running Man
+      </header>
+      <section class="top">
+      </section>
+      <section class="bottom">
+        <div class="button"><a class="map-button" href="#map"></a></div>
+      </section>
+    </section>
+    <div class="wrapper">
+      <div id="map" style="height:600px;">
       </div>
-      <div id="map"></div>
       <aside>
         <h4>Stats Template Here</h4>
         <section id="runRoute" class="tab-content">
@@ -42,10 +43,21 @@
               </select>
             </li>
           </ul>
-        <section id="stats-comparison">
+          <section id="stats-comparison">
+          </section>
         </section>
-      </section>
       </aside>
+      <input type="submit" id="submit"><br>
+        <input id="mapall" type="checkbox" checked>Show markers</><br>
+        <input id="delete" type="button">Delete last marker</>
+      <input type="submit" id="submit">
+      <button id="toggle">Toggle</button>
+      <div id="floating-panel">
+        <input onclick="clearMarkers();" type=button value="Hide Markers">
+        <input onclick="showMarkers();" type=button value="Show All Markers">
+        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+      </div>
+      <!-- <div id="map"></div> -->
       <div id="total-distance"></div>
       <div id="directions-panel"></div>
       <div id="elevation_chart"></div>
