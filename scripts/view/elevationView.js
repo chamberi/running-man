@@ -49,7 +49,9 @@
 
   elevationsView.plotElevation = function(elevations, status, routeId) {
     var elevDiv = document.createElement('div');
+    $('#elevation_chart').append('<h4> Route ' + routeId + '</h4>');
     $('#elevation_chart').append(elevDiv);
+
     if (status !== 'OK') {
       chartDiv.innerHTML = 'Cannot show elevation: request failed because ' +
           status;
@@ -64,13 +66,9 @@
     }
 
     chart.draw(data, {
-      title: 'Route ' + routeId,
       height: 150,
       legend: 'none',
       titleY: 'Elevation (m)',
-      titleTextStyle: {
-        fontSize: 12,
-      }
     });
   };
 
