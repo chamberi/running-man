@@ -13,12 +13,42 @@
     total = total / 1000;
     console.log(total);
   }
+
   googleMap.initMap = function() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain'
+    });
+
+    $('#mapall').change(function() {
+      if( $('#mapall').prop('checked')) {
+        showOverlays();
+      }
+      else {
+        clearOverlays();
+      }
+    });
+
+    function clearOverlays() {
+      if (googleMap.markers) {
+        for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
+          googleMap.markers[i].setMap(null);
+        }
+      }
+    }
+
+    function showOverlays() {
+      if (googleMap.markers) {
+        for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
+          googleMap.markers[i].setMap(map);
+        }
+      }
+    }
+
+    $('#deleteMarkers').on('click', function() {
+      googleMap.markers.pop().setMap(null);
     });
 
     var directionsService = new google.maps.DirectionsService;
@@ -129,12 +159,6 @@
       googleMap.markers = [];
     });
   };
-
-  $('#delete').change(function() {
-    if ($('#delete').prop('clicked')) {
-      googleMap.markers.setMap(null);
-    }
-  });
 
   module.googleMap = googleMap;
 })(window);
