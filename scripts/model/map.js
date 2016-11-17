@@ -12,7 +12,8 @@
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
       center: {lat: 47.608, lng: -122.335},
-      mapTypeId: 'terrain'
+      mapTypeId: 'terrain',
+      clickableIcons: false
     });
 
     $('#showMarkers').click(function() {

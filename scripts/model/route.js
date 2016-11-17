@@ -105,9 +105,9 @@
       var tic = num + 1;
       var statsRenderer = $('#stats-comparison');
       statsRenderer.append('<h3>Route ' + tic + '</h3>');
-      statsRenderer.append('<p>Total Distance: ' + googleMap.routeList[num].totalDistance + ' km</p>');
-      statsRenderer.append('<p>Distance > 10%: ' + googleMap.routeList[num].steepDistance + ' m</p>');
-      statsRenderer.append('<p>Elevation Gain: ' + googleMap.routeList[num].totalGain + ' m</p>');
+      statsRenderer.append('<p>Total Distance: ' + googleMap.routeList[num].totalDistance + '</p>');
+      statsRenderer.append('<p>Distance > 10%: ' + googleMap.routeList[num].steepDistance + '</p>');
+      statsRenderer.append('<p>Elevation Gain: ' + googleMap.routeList[num].totalGain + '</p>');
     });
   };
 
@@ -123,6 +123,7 @@
     var distanceMiles = totalDistanceCount/1609.34;
     var dis = totalDistanceCount / 1000;
     route.totalDistance = dis.toFixed(2);
+    route.totMiles = distanceMiles.toFixed(2);
   };
 
   // var statsComparison = document.getElementById('stats-comparison');
