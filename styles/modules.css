@@ -34,3 +34,8 @@ aside p, h3 {
   padding: 0;
   margin: 2px;
 }
+
+#elevation_chart h4 {
+  text-align: center;
+
+}
