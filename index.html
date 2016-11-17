@@ -17,14 +17,9 @@
       <div id="map" style="height:600px;"></div>
       <input type="submit" id="submit"><br>
         <input id="mapall" type="checkbox" checked>Show markers</><br>
-        <input id="delete" type="button">Delete last marker</>
-      <input type="submit" id="submit">
+        <input id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"></><br>
+      <input type="submit" id="submit"><br>
       <button id="toggle">Toggle</button>
-      <div id="floating-panel">
-        <input onclick="clearMarkers();" type=button value="Hide Markers">
-        <input onclick="showMarkers();" type=button value="Show All Markers">
-        <input onclick="deleteMarkers();" type=button value="Delete Markers">
-      </div>
       <div id="map"></div>
       <aside>
         <h4>Stats Template Here</h4>
