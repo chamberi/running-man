@@ -29,8 +29,9 @@
       var statsRenderer = $('#stats-comparison');
       statsRenderer.append('<h3>Route ' + tic + '</h3>');
       statsRenderer.append('<p>Total Distance: ' + googleMap.routeList[num].totalDistance + ' km</p>');
-      statsRenderer.append('<p>Distance > 10%: ' + googleMap.routeList[num].steepDistance + ' m</p>');
       statsRenderer.append('<p>Elevation Gain: ' + googleMap.routeList[num].totalGain + ' m</p>');
+      statsRenderer.append('<p>Steep Distance (> 10%): ' + googleMap.routeList[num].steepDistance + ' m</p>');
+
     });
   };
 
