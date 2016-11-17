@@ -48,7 +48,9 @@
     }
 
     $('#deleteMarkers').on('click', function() {
-      googleMap.markers.pop().setMap(null);
+      if (googleMap.markers.length !== 0) {
+        googleMap.markers.pop().setMap(null);
+      };
     });
 
     var directionsService = new google.maps.DirectionsService;

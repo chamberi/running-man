@@ -11,16 +11,26 @@
     <link href="styles/base.css" rel="stylesheet">
     <link href="styles/layout.css" rel="stylesheet">
     <link href="styles/modules.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
   </head>
   <body>
-    <div>
+    <section class="site-info">
+      <header>
+      Running Man
+      </header>
+      <section class="top">
+      </section>
+      <section class="bottom">
+        <div class="button"><a class="map-button" href="#map"></a></div>
+      </section>
+    </section>
+    <div class="wrapper">
       <div id="map" style="height:600px;"></div>
       <input type="submit" id="submit"><br>
         <input id="mapall" type="checkbox" checked>Show markers</><br>
         <input id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"></><br>
-      <input type="submit" id="submit"><br>
       <button id="toggle">Toggle</button>
-      <div id="map"></div>
+      <div id="map">
       <aside>
         <h4>Stats Template Here</h4>
         <section id="runRoute" class="tab-content">
@@ -37,13 +47,26 @@
               </select>
             </li>
           </ul>
-        <section id="stats-comparison">
+          <section id="stats-comparison">
+          </section>
         </section>
-      </section>
       </aside>
+    </div>
+      <input type="submit" id="submit"><br>
+        <input id="mapall" type="checkbox" checked>Show markers</><br>
+        <input id="delete" type="button">Delete last marker</>
+      <input type="submit" id="submit">
+      <button id="toggle">Toggle</button>
+      <div id="floating-panel">
+        <input onclick="clearMarkers();" type=button value="Hide Markers">
+        <input onclick="showMarkers();" type=button value="Show All Markers">
+        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+      </div>
+      <!-- <div id="map"></div> -->
       <div id="total-distance"></div>
       <div id="directions-panel"></div>
       <div id="elevation_chart"></div>
+    </div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="vendor/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
@@ -51,13 +74,9 @@
       <script src="scripts/model/route.js"></script>
       <script src="scripts/model/map.js"></script>
       <script src="scripts/view/elevationView.js"></script>
-      <!-- <script src="scripts/view/mapView.js"></script> -->
       <script src="scripts/controllers/controller.js"></script>
-      <!-- <script src="scripts/view/statsBar.js"></script> -->
-
       <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDULz6eDciWw-YnOdMAw4FAiZajDWxUAas&callback=initMap&sensor=false&v=3&libraries=geometry">
       </script>
-    </div>
   </body>
 </html>
