@@ -71,7 +71,7 @@
       googleMap.rendererArray.push(renderer);
       renderer.setMap(map);
       googleMap.activeIndexes.push(newRoute.id - 1);
-      Route.queryRoute(newRoute, [Route.renderActive,googleMap.addFilter]);
+      Route.queryRoute(newRoute, [googleMap.addFilter,Route.renderActive]);
       // renderer.addListener('directions_changed', function() {
       //   console.log('changed');
       //   computeTotalDistance(directionsDisplay.getDirections());
@@ -109,7 +109,7 @@
           draggable: true,
           map: googleMap.map
         }));
-        Route.queryRoute(el, [function(){}, googleMap.addFilter]);
+        Route.queryRoute(el, [googleMap.addFilter]);
         googleMap.rendererArray[idx].setMap(googleMap.map);
         // googleMap.rendererArray[idx].addListener('directions_changed', function() {
         //   console.log('changed');
@@ -129,12 +129,12 @@
   };
 
   googleMap.addFilter = function(route) {
-    console.log(route);
     var template = $('#route-filter-template').html();
     var templateRender = Handlebars.compile(template);
     $('#route-filter').append(templateRender(route));
-    $('#route-filter h3').unbind();
-    $('#route-filter h3').click(function(event) {
+    var $filter = $('#route-filter h3');
+    $filter.unbind();
+    $filter.click(function(event) {
       var id = parseInt(event.target.id) - 1;
       if (googleMap.activeIndexes.includes(id)){
         googleMap.activeIndexes.splice(id,1);

@@ -46,8 +46,10 @@
 
       }, 0);
       if (callback) {
-        callback[0]();
-        callback[1](route);
+        callback[0](route);
+        if (callback[1]) {
+          callback[1]();
+        }
       }
     });
   };
