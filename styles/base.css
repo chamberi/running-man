@@ -8,5 +8,15 @@ li {
   list-style: none;
 }
 body{
-  font-family: 'Arimo', sans-serif;
+  font-family: 'helvetica', sans-serif;
+}
+.top{
+  color: white;
+}
+@font-face {
+    font-family: helvetica;
+    src: url(../vendors/helvetica.ttf);
+}
+h1{
+  font-size: 2em;
 }
