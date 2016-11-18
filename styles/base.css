@@ -21,7 +21,7 @@ body{
 }
 @font-face {
     font-family: helvetica;
-    src: url(../vendors/helvetica.ttf);
+    /*src: url(../vendors/helvetica.ttf);*/
 }
 h1{
   font-size: 2em;
