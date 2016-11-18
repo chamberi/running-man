@@ -6,7 +6,7 @@
     <title>Ma maps</title>
     <script src="https://www.google.com/jsapi"></script>
     <script id="route-filter-template" type="text/x-handlebars-template">
-      <h3 id="{{id}}">Route {{id}}</h3>
+      <h3 id="{{id}}">{{name}}</h3>
       <div id="{{id}}">
         <p>Total Distance: {{totalDistance}} km</p>
         <p>Distance > 10%: {{steepDistance}} m</p>
@@ -61,7 +61,7 @@
           </section>
         </section>
       </aside>
-
+      <input type="text" id="route-name" placeholder="Name your route">
       <div class="map-bar">
         <div class="map-nav-button" type="submit" id="submit"><span class="fa fa-check-circle fa-3x"></span></div><!--
      --><div class="map-nav-button" id="showMarkers" type="checkbox" checked><span class="fa fa-eye fa-3x"></span></div><!--

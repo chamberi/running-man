@@ -10,9 +10,10 @@
   googleMap.initMap = function() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
+      zoom: 11,
       center: {lat: 47.608, lng: -122.335},
-      mapTypeId: 'terrain'
+      mapTypeId: 'terrain',
+      clickableIcons: true
     });
 
     $('#showMarkers').click(function() {
@@ -62,8 +63,16 @@
       googleMap.placeMarkerAndPanTo(e.latLng);
     });
 
+
     document.getElementById('submit').addEventListener('click', function() {
       var newRoute = new Route(googleMap.markers, map);
+      var $name = $('#route-name');
+      if ($name.val() !== '') {
+        newRoute.name = $name.val();
+      } else {
+        newRoute.name = 'Route ' + newRoute.id;
+      }
+      $name.val('');
       googleMap.markers.forEach(function(ele){
         ele.setMap(null);
       });
@@ -113,6 +122,9 @@
 
       console.log('fetching routes');
       googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
+      googleMap.routeList.sort(function(a,b){
+        return b.id - a.id;
+      });
       googleMap.routeList.forEach(function(el, idx){
         googleMap.rendererArray.push(new google.maps.DirectionsRenderer({
           draggable: true,
