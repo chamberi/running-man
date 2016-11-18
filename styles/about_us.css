@@ -9,7 +9,7 @@ h1 {
     text-align: center;
     border-radius: 1em;
     max-width: 60%;
-    font-family: 'Righteous', sans-serif;
+    font-family: 'helvetica', sans-serif;
     margin-bottom: .5em;
     background-image: url(http://wallpapercave.com/wp/s7R41PL.jpg);
     color: black;
@@ -18,9 +18,9 @@ h1 {
 body {
     width: 700px;
     height: 100%;
-    background-color: #2ccc7f;
+    background-color: #11161C;
     color: #fff;
-    font-family: 'Righteous', sans-serif;
+    font-family: 'helvetica', sans-serif;
     margin: 0 auto;
     text-align: left;
     text-shadow: black 1px 1px;
@@ -31,15 +31,22 @@ img {
     border-radius: 1em;
 }
 
+div {
+  margin-top: 1em;
+}
+
 #one {
-    /*float: right;*/
+    position: relative;
+    right: -7.5em;
+    text-align: left;
     box-shadow: 5px 5px 3px #888888;
     max-width: 15em;
     max-height: 15em;
 }
 
 #two {
-    /*float: left;*/
+    position: relative;
+    right: -7.5em;
     box-shadow: 5px 5px 3px #888888;
     margin: .3em;
     max-width: 15em;
@@ -47,14 +54,16 @@ img {
 }
 
 #three {
-    /*float: right;*/
+    position: relative;
+    right: -10.5em;
     box-shadow: 5px 5px 3px #888888;
     max-width: 15em;
     max-height: 15em;
 }
 
 #four {
-    /*float: left;*/
+    position: relative;
+    right: -9em;
     box-shadow: 5px 5px 3px #888888;
     margin: .3em;
     max-width: 15em;
@@ -76,9 +85,8 @@ p {
     padding: 1em;
     font-size: 1em;
     max-width: 75%;
-    margin: 1em;
     border: 2px solid #C5C3C6;
-    border-radius: 20px;
+    border-radius: 10px;
     background-color: #46494C;
     width: 700px;
     box-shadow: 5px 10px 20px black;
@@ -88,6 +96,7 @@ p {
     animation-duration: 2.3s;
     animation-name: slidein;
 }
+
 
 p:hover {
     background-color: cyan;
