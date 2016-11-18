@@ -23,6 +23,22 @@
     $('#elevation_chart').empty();
     routes.forEach(function(route){
       Route.renderRoute(route);
+      var renderer = googleMap.rendererArray[route.id - 1];
+      google.maps.event.clearInstanceListeners(renderer);
+      google.maps.event.addListener(renderer, 'directions_changed',
+      function() {
+        console.log('event');
+        var draggedRoute = renderer.getDirections();
+        var detailedPath = draggedRoute.routes[0].overview_path.map(function(point) {
+          return {
+            lat: point.lat(),
+            lng: point.lng()
+          };
+        });
+        route.detailedPath = detailedPath;
+        Route.countDistance(draggedRoute.routes[0], route);
+        elevationsView.calculateStats(route, [Route.rebuildStats]);
+      });
     });
     googleMap.setLocal();
   };
@@ -40,23 +56,24 @@
         strokeColor: Route.colors[route.id - 1]
       }
     });
-    // renderer.addListener('directions_changed', function() {
-    //   var draggedRoute = renderer.getDirections();
-    //   var detailedPath = draggedRoute.routes[0].overview_path.map(function(point) {
-    //     return {
-    //       lat: point.lat(),
-    //       lng: point.lng()
-    //     };
-    //   });
-    //   route.detailedPath = detailedPath;
-    //   Route.countDistance(draggedRoute.routes[0], route);
-    //   elevationsView.calculateStats(route, [Route.rebuildStats]);
-    // });
+
     renderer.setDirections(googleMap.routeResponses[route.id - 1]);
     elevationsView.displayPathElevation(route.detailedPath);
     elevationsView.plotElevation('OK', route);
   };
 
+  Route.rebuildStats = function(route) {
+    var $ps = $('aside#stats div#' + route.id + ' p');
+    console.log($ps);
+    $('div#' + route.id + ' p').innerHTML = '';
+    $ps[0].innerText = 'Total Distance: ' + route.totalDistance + ' km (' + route.totMiles + ' mi)';
+    $ps[1].innerText = 'Distance > 10%: ' + route.steepDistance + ' m (' + route.steepMiles + ' mi)';
+    $ps[2].innerText = 'Elevation Gain: ' + route.totalGain + ' m (' + route.elevMiles + ' mi)';
+    $('#elevation_chart').empty();
+    googleMap.activeIndexes.forEach(function(idx) {
+      elevationsView.plotElevation('OK', googleMap.routeList[idx]);
+    });
+  };
   // Route.rebuildStats = function(route) {
   //   $('div p').empty();
   //   $('div p')[0].append('Total Distance: ' + route.totalDistance + ' km (' + route.totMiles + ' mi)');
