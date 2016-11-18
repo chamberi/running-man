@@ -6,7 +6,7 @@
     <title>Ma maps</title>
     <script src="https://www.google.com/jsapi"></script>
     <script id="route-filter-template" type="text/x-handlebars-template">
-      <h3 id="{{id}}">Route {{id}}</h3>
+      <h3 id="{{id}}">{{name}}</h3>
       <div id="{{id}}">
         <p>Total Distance: {{totalDistance}} km ({{totMiles}} mi)</p>
         <p>Distance > 10%: {{steepDistance}} m ({{steepMiles}} mi)</p>
@@ -42,19 +42,6 @@
           <h2>Raptor</h2>
           <section id="runRoute" class="tab-content">
             <button id="clear">Clear routes</button>
-            <!-- <ul id="filters">
-              <li>
-
-                <select class="route-filter" id="required">
-                  <option>Routes</option>
-                </select>
-              </li>
-              <li>
-                <select class="route-filter" id="compare">
-                  <option>Compare</option>
-                </select>
-              </li>
-            </ul> -->
 
             <section id="route-filter">
             </section>
@@ -63,7 +50,7 @@
           </section>
         </section>
       </aside>
-
+      <input type="text" id="route-name" placeholder="Name your route">
       <div class="map-bar">
         <div class="map-nav-button" type="submit" id="submit"><span class="fa fa-check-circle fa-3x"></span></div><!--
      --><div class="map-nav-button" id="showMarkers" type="checkbox" checked><span class="fa fa-eye fa-3x"></span></div><!--
@@ -73,17 +60,7 @@
    --><div class="map-nav-button" id="toggleOff"><span class="fa fa-toggle-off fa-rotate-180 fa-3x"></span></div>
       </div>
     </div>
-      <!-- <input type="submit" id="submit"><br>
-        <input id="mapall" type="checkbox" checked>Show markers</><br>
-        <input id="delete" type="button">Delete last marker</>
-      <input type="submit" id="submit">
-      <button id="toggle">Toggle</button>
-      <div id="floating-panel">
-        <input onclick="clearMarkers();" type=button value="Hide Markers">
-        <input onclick="showMarkers();" type=button value="Show All Markers">
-        <input onclick="deleteMarkers();" type=button value="Delete Markers">
-      </div> -->
-      <!-- <div id="map"></div> -->
+
       <div id="total-distance"></div>
       <div id="directions-panel"></div>
       <div id="elevation_chart"></div>
