@@ -178,10 +178,18 @@ opacity: 0.20;
   /*display: none;*/
   position: absolute;
   bottom: 105vh;
-  width: 50%;
-  margin-left: 25%;
-  margin-right: 25%;
+  width: 30%;
+  height: 20px;
+  margin-left: 35%;
+  margin-right: 35%;
   z-index: 2;
+  opacity: .5;
+  text-align: center;
+  transition: 300ms;
+}
+
+input#route-name:hover, input#route-name:focus {
+  opacity: .9;
 }
 
 @media only screen and (min-width: 900px) {
