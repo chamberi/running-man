@@ -10,7 +10,7 @@
   googleMap.initMap = function() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
+      zoom: 12,
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain',
       clickableIcons: false
@@ -51,6 +51,7 @@
 
     $('#clear').on('click', function() {
       localStorage.clear();
+      window.location.reload();
     });
 
     var directionsService = new google.maps.DirectionsService;
@@ -67,8 +68,17 @@
       googleMap.placeMarkerAndPanTo(e.latLng);
     });
 
+
     document.getElementById('submit').addEventListener('click', function() {
       var newRoute = new Route(googleMap.markers, map);
+      var $name = $('#route-name');
+      if ($name.val() !== '') {
+        newRoute.name = $name.val();
+      } else {
+        newRoute.name = 'Route ' + newRoute.id;
+      }
+      $name.val('');
+      newRoute.isNew = true;
       googleMap.markers.forEach(function(ele){
         ele.setMap(null);
       });
@@ -118,6 +128,9 @@
 
       console.log('fetching routes');
       googleMap.routeList = JSON.parse(localStorage.getItem('routes'));
+      googleMap.routeList.sort(function(a,b){
+        return b.id - a.id;
+      });
       googleMap.routeList.forEach(function(el, idx){
         googleMap.rendererArray.push(new google.maps.DirectionsRenderer({
           draggable: true,
@@ -146,7 +159,7 @@
     var template = $('#route-filter-template').html();
     var templateRender = Handlebars.compile(template);
     $('#route-filter').append(templateRender(route));
-    var $filter = $('#route-filter h3');
+    var $filter = $('#route-filter h3#' + route.id);
     $filter.unbind();
     $filter.click(function(event) {
       var id = parseInt(event.target.id) - 1;
@@ -161,6 +174,10 @@
       $(this).next().toggle('slow');
       return false;
     }).next().hide();
+    if (route.isNew) {
+      route.isNew = false;
+      $filter.next().show();
+    }
   };
 
   googleMap.placeMarkerAndPanTo = function(latLng) {

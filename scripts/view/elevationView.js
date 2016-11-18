@@ -59,7 +59,7 @@
   elevationsView.plotElevation = function(status, route) {
     var elevDiv = document.createElement('div');
     var elevations = elevationsView.elevationsList[route.id - 1];
-    $('#elevation_chart').append('<h4> Route ' + route.id + '</h4>');
+    $('#elevation_chart').append('<h4>' + route.name + '</h4>');
     $('#elevation_chart').append(elevDiv);
 
     if (status !== 'OK') {
