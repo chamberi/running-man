@@ -51,6 +51,7 @@
 
     $('#clear').on('click', function() {
       localStorage.clear();
+      window.location.reload();
     });
 
     var directionsService = new google.maps.DirectionsService;

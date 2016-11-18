@@ -40,11 +40,34 @@
         strokeColor: Route.colors[route.id - 1]
       }
     });
+    renderer.addListener('directions_changed', function() {
+      // e.preventDefault();
+      var draggedRoute = renderer.getDirections();
+      var detailedPath = draggedRoute.routes[0].overview_path.map(function(point) {
+        return {
+          lat: point.lat(),
+          lng: point.lng()
+        };
+      });
+      route.detailedPath = detailedPath;
+      Route.countDistance(draggedRoute.routes[0], route);
+      elevationsView.calculateStats(route, [Route.rebuildStats]);
+    });
     renderer.setDirections(googleMap.routeResponses[route.id - 1]);
     elevationsView.displayPathElevation(route.detailedPath);
     elevationsView.plotElevation('OK', route);
   };
 
+  Route.rebuildStats = function(route) {
+    $('div p').empty();
+    $('div p')[0].append('Total Distance: ' + route.totalDistance + ' km (' + route.totMiles + ' mi)');
+    $('div p')[1].append('Distance > 10%: ' + route.steepDistance + ' m (' + route.steepMiles + ' mi)');
+    $('div p')[2].append('Elevation Gain: ' + route.totalGain + ' m (' + route.elevMiles + ' mi)');
+    $('#elevation_chart').empty();
+    googleMap.activeIndexes.forEach(function(idx) {
+      elevationsView.plotElevation('OK', googleMap.routeList[idx]);
+    });
+  };
 
   Route.showRoute = function() {
     selectRouteDisplay();
@@ -93,22 +116,6 @@
       optimizeWaypoints: true,
       travelMode: 'WALKING'
     };
-  };
-
-  function selectRouteDisplay() {
-    googleMap.rendererArray.forEach(function(ele){
-      ele.setMap(null);
-    });
-    $('#route-filter').empty();
-    $('#stats-comparison').text('');
-    googleMap.activeIndexes.forEach(function(num) {
-      var tic = num + 1;
-      var statsRenderer = $('#stats-comparison');
-      statsRenderer.append('<h3>Route ' + tic + '</h3>');
-      statsRenderer.append('<p>Total Distance: ' + googleMap.routeList[num].totalDistance + '</p>');
-      statsRenderer.append('<p>Distance > 10%: ' + googleMap.routeList[num].steepDistance + '</p>');
-      statsRenderer.append('<p>Elevation Gain: ' + googleMap.routeList[num].totalGain + '</p>');
-    });
   };
 
   Route.countDistance = function(responseRoute, route) {
