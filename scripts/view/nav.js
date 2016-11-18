@@ -14,3 +14,8 @@ $('#home-link').click(function() {
     scrollTop: $('.site-info').offset().top
   }, 500);
 });
+$('.map-button').click(function() {
+  $('html, body').animate({
+    scrollTop: $('#map').offset().top
+  }, 500);
+});
