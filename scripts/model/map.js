@@ -82,7 +82,9 @@
       }
       $name.val('');
       newRoute.isNew = true;
-      var renderer = new google.maps.DirectionsRenderer();
+      var renderer = new google.maps.DirectionsRenderer({
+        draggable: true
+      });
       googleMap.rendererArray.push(renderer);
       renderer.setMap(map);
       googleMap.activeIndexes.push(newRoute.id - 1);
@@ -171,7 +173,7 @@
         googleMap.rendererArray[id].setMap(googleMap.map);
       }
       Route.renderActive();
-      $filter.next().toggle('slow');
+      $filter.next().toggle();
       return false;
     }).next().hide();
     if (route.isNew) {
