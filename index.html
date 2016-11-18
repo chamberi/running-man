@@ -8,9 +8,9 @@
     <script id="route-filter-template" type="text/x-handlebars-template">
       <h3 id="{{id}}">{{name}}</h3>
       <div id="{{id}}">
-        <p>Total Distance: {{totalDistance}} km</p>
-        <p>Distance > 10%: {{steepDistance}} m</p>
-        <p>Elevation Gain: {{totalGain}} m</p>
+        <p>Total Distance: {{totalDistance}} km ({{totMiles}} mi)</p>
+        <p>Distance > 10%: {{steepDistance}} m ({{steepMiles}} mi)</p>
+        <p>Elevation Gain: {{totalGain}} m ({{elevMiles}} mi)</p>
       </div>
     </script>
     <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
@@ -23,7 +23,8 @@
   <body>
     <section class="site-info">
       <header>
-
+        <nav> <a href="aboutUs.html">About us</a>
+      </nav>
       </header>
       <section class="top">
         <h1>RUNNING MAN</h1>
@@ -40,19 +41,7 @@
         <section id="statpanel">
           <h2>Raptor</h2>
           <section id="runRoute" class="tab-content">
-            <!-- <ul id="filters">
-              <li>
-
-                <select class="route-filter" id="required">
-                  <option>Routes</option>
-                </select>
-              </li>
-              <li>
-                <select class="route-filter" id="compare">
-                  <option>Compare</option>
-                </select>
-              </li>
-            </ul> -->
+            <button id="clear">Clear routes</button>
 
             <section id="route-filter">
             </section>
@@ -71,17 +60,7 @@
    --><div class="map-nav-button" id="toggleOff"><span class="fa fa-toggle-off fa-rotate-180 fa-3x"></span></div>
       </div>
     </div>
-      <!-- <input type="submit" id="submit"><br>
-        <input id="mapall" type="checkbox" checked>Show markers</><br>
-        <input id="delete" type="button">Delete last marker</>
-      <input type="submit" id="submit">
-      <button id="toggle">Toggle</button>
-      <div id="floating-panel">
-        <input onclick="clearMarkers();" type=button value="Hide Markers">
-        <input onclick="showMarkers();" type=button value="Show All Markers">
-        <input onclick="deleteMarkers();" type=button value="Delete Markers">
-      </div> -->
-      <!-- <div id="map"></div> -->
+
       <div id="total-distance"></div>
       <div id="directions-panel"></div>
       <div id="elevation_chart"></div>

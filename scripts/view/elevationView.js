@@ -35,7 +35,8 @@
         };
         return acc;
       }, 0.0);
-
+      elevMi = route.totalGain / 1609.34;
+      route.elevMiles = elevMi.toFixed(2);
       route.steepDistance = hillData.filter(function(dataPoint){
         return dataPoint[2] > 0.10;
       })
@@ -43,8 +44,9 @@
         acc += cur[1];
         acc = parseFloat(acc.toFixed(2));
         return acc;
-
       }, 0);
+      steepMi = route.steepDistance / 1609.34;
+      route.steepMiles = steepMi.toFixed(2);
       if (callback) {
         callback[0](route);
         if (callback[1]) {
@@ -57,7 +59,7 @@
   elevationsView.plotElevation = function(status, route) {
     var elevDiv = document.createElement('div');
     var elevations = elevationsView.elevationsList[route.id - 1];
-    $('#elevation_chart').append('<h4> Route ' + route.id + '</h4>');
+    $('#elevation_chart').append('<h4>' + route.name + '</h4>');
     $('#elevation_chart').append(elevDiv);
 
     if (status !== 'OK') {
