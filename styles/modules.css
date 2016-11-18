@@ -143,19 +143,3 @@ span{
   padding: 5px;
   font-size: .9em;
 }
-input#route-name {
-  text-align: center;
-  z-index: 5;
-  position: absolute;
-  top: 0px;
-  height: 30px;
-  width: 30vw;
-  font-size: 20px;
-  opacity: .5;
-  left: 35vw;
-  transition: 300ms;
-}
-
-input#route-name:hover, input#route-name:focus {
-  opacity: .9;
-}
