@@ -6,7 +6,7 @@
     <title>Running Man</title>
     <script src="https://www.google.com/jsapi"></script>
     <script id="route-filter-template" type="text/x-handlebars-template">
-      <h3 id="{{id}}">Route {{id}}</h3>
+      <h3 id="{{id}}">{{name}}</h3>
       <div id="{{id}}">
         <p>Total Distance: {{totalDistance}} km ({{totMiles}} mi)</p>
         <p>Distance > 10%: {{steepDistance}} m ({{steepMiles}} mi)</p>
@@ -66,6 +66,7 @@
           </section>
         </section>
       </aside>
+      <input type="text" id="route-name" placeholder="Name your route">
     </div>
       <!-- <input type="submit" id="submit"><br>
         <input id="mapall" type="checkbox" checked>Show markers</><br>

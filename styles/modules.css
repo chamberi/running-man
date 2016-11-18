@@ -175,7 +175,7 @@ background-color: black;
 opacity: 0.20;
 }
 #route-name{
-  display: none;
+  /*display: none;*/
   position: absolute;
   bottom: 105vh;
   width: 50%;
