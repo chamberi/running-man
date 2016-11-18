@@ -72,6 +72,14 @@
       googleMap.markers.forEach(function(ele){
         ele.setMap(null);
       });
+      var $name = $('#route-name');
+      if ($name.val() !== '') {
+        newRoute.name = $name.val();
+      } else {
+        newRoute.name = 'Route ' + newRoute.id;
+      }
+      $name.val('');
+      newRoute.isNew = true;
       googleMap.markers = [];
       var renderer = new google.maps.DirectionsRenderer();
       var renderer = directionsDisplay;
@@ -146,7 +154,7 @@
     var template = $('#route-filter-template').html();
     var templateRender = Handlebars.compile(template);
     $('#route-filter').append(templateRender(route));
-    var $filter = $('#route-filter h3');
+    var $filter = $('#route-filter h3#' + route.id);
     $filter.unbind();
     $filter.click(function(event) {
       var id = parseInt(event.target.id) - 1;
@@ -161,6 +169,10 @@
       $(this).next().toggle('slow');
       return false;
     }).next().hide();
+    if (route.isNew) {
+      route.isNew = false;
+      $filter.next().show();
+    }
   };
 
   googleMap.placeMarkerAndPanTo = function(latLng) {
