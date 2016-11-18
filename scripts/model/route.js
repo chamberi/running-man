@@ -41,7 +41,6 @@
       }
     });
     renderer.addListener('directions_changed', function() {
-      // e.preventDefault();
       var draggedRoute = renderer.getDirections();
       var detailedPath = draggedRoute.routes[0].overview_path.map(function(point) {
         return {
