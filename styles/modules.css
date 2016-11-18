@@ -1,54 +1,54 @@
 #map {
   position: relative;
-  height: 85vh;
+  height: 100vh;
 }
 aside section#statpanel {
   z-index: 1;
-  position: absolute;
   bottom: 0px;
-  /*right: 0px;*/
+  left: 0%;
   display: inline-block;
-  background-color: snow;
+  background-color: #11161C;
   border-left: solid 2px darkgray;
   border-bottom: solid 2px darkgray;
   font-size: 16px;
-  height: 60vh;
-  width: 20%;
+  height: 100vh;
   border-bottom-left-radius: 8px;
   font-family: 'Lora';
   overflow: scroll;
-
-  /*border: solid 1px darkgray;*/
   font-size: 16px;
-  height: 20%;
   width: 100%;
-  /*border-radius: 10px;*/
-  /*padding: 10px;*/
 
 }
 aside section#statpanel h2 {
-  text-align: center
+  margin-top: 25%;
+  text-align: center;
+  color: white;
 }
 
 aside h3 {
   margin-top: 8px;
+  color: white;
 }
 
 aside li {
   list-style: none;
+
 }
 
 aside ul#filters {
   padding: 0;
+  color: white;
 }
 
 #stats-comparison {
   font-size: 12px;
+  color: white;
 }
 
 aside p, h3 {
   padding: 0;
   margin: 2px;
+  color: white;
 }
 
 #elevation_chart h4 {
@@ -137,9 +137,38 @@ span{
   border: 1px solid gray;
   border-radius: 4px;
   padding: 5px;
+  text-align: center;
 }
 
 #route-filter div {
   padding: 5px;
   font-size: .9em;
+}
+.top-nav{
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  padding-left: 0;
+  width: 100%;
+  z-index: 4;
+  margin-top: 0px;
+}
+.top-nav-button{
+  display: inline-block;
+  width: 25%;
+}
+.top-nav-link{
+  color: white;
+  text-decoration: none;
+}
+.nav-shade{
+position: fixed;
+z-index: 1;
+top: 0;
+width: 100%;
+height: 75px;
+margin-top: 0px;
+background-color: black;
+opacity: 0.20;
 }
