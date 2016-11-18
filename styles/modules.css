@@ -23,6 +23,7 @@ aside section#statpanel h2 {
   margin-top: 25%;
   text-align: center;
   color: white;
+  overflow: auto;
 }
 
 aside h3 {
@@ -104,7 +105,7 @@ button#slidetoggle {
   position: absolute;
   display: flex;
   justify-content:space-between;
-  top: 10%;
+  top: 75px;
   width: 100%;
   /*background-color: white*/
 }
@@ -161,6 +162,7 @@ span{
 .top-nav-link{
   color: white;
   text-decoration: none;
+  font-size: 1em;
 }
 .nav-shade{
 position: fixed;
@@ -171,4 +173,36 @@ height: 75px;
 margin-top: 0px;
 background-color: black;
 opacity: 0.20;
+}
+#route-name{
+  display: none;
+  position: absolute;
+  bottom: 105vh;
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
+  z-index: 2;
+}
+
+@media only screen and (min-width: 900px) {
+  #stats-link{
+    display: none
+  }
+  #stats{
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    width: 350px;
+  }
+  #route-name{
+    position: absolute;
+    top: 90vh;
+    width: 250px;
+    height: 1em;
+    font-size: 2em;
+    left: 20px;
+    margin: 0;
+    padding: 0;
+  }
 }
