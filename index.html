@@ -23,12 +23,21 @@
   <body>
     <section class="site-info">
       <header>
-        <nav> <a href="aboutUs.html">About us</a>
+        <nav>
+          <ul class="top-nav">
+            <li id="home-link" class="top-nav-button"><a class="top-nav-link" href="#">HOME</a></li><!--
+            --><li id="map-link" class="top-nav-button"><a class="top-nav-link" href="#">MAP</a></li><!--
+            --><li id="stats-link" class="top-nav-button"><a class="top-nav-link" href="#">STATS</a></li><!--
+            --><li class="top-nav-button"><a class="top-nav-link" href="aboutUs.html">ABOUT</a></li>
+          </ul>
       </nav>
+      <div class="nav-shade">
+
+      </div>
       </header>
       <section class="top">
         <h1>RUNNING MAN</h1>
-        <h1>KNOW WHERE YOURE GOING</h1>
+        <h1>KNOW WHERE YOU'RE GOING</h1>
       </section>
       <section class="bottom">
         <div class="button"><a class="map-button" href="#map">START RUNNING</a></div>
@@ -36,43 +45,29 @@
     </section>
     <div class="wrapper">
       <div id="map" style="height:100vh;"></div>
-      <aside>
-        <button id="slidetoggle">toggle</button>
-        <section id="statpanel">
-          <h2>Raptor</h2>
-          <section id="runRoute" class="tab-content">
-            <button id="clear">Clear routes</button>
-            <!-- <ul id="filters">
-              <li>
-
-                <select class="route-filter" id="required">
-                  <option>Routes</option>
-                </select>
-              </li>
-              <li>
-                <select class="route-filter" id="compare">
-                  <option>Compare</option>
-                </select>
-              </li>
-            </ul> -->
-
-            <section id="route-filter">
-            </section>
-          </section>
-          <section id="stats-comparison">
-          </section>
-        </section>
-      </aside>
-
+      <input type="text" id="route-name" placeholder="Name your route">
       <div class="map-bar">
         <div class="map-nav-button" type="submit" id="submit"><span class="fa fa-check-circle fa-3x"></span></div><!--
      --><div class="map-nav-button" id="showMarkers" type="checkbox" checked><span class="fa fa-eye fa-3x"></span></div><!--
      --><div class="map-nav-button" id="hideMarkers" type="checkbox" checked><span class="fa fa-eye-slash fa-3x"></span></div><!--
-     --><div class="map-nav-button" id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"><span class="fa fa-minus-square fa-3x"></span></div><!--
+     --><div class="map-nav-button" id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"><span class="fa   fa-minus-square fa-3x"></span></div><!--
      --><div class="map-nav-button" id="toggleOn"><span class="fa fa-toggle-on fa-rotate-180 fa-3x"></span></div><!--
-   --><div class="map-nav-button" id="toggleOff"><span class="fa fa-toggle-off fa-rotate-180 fa-3x"></span></div>
+     --><div class="map-nav-button" id="toggleOff"><span class="fa fa-toggle-off fa-rotate-180 fa-3x"></span></div><!--
+     --><div class="map-nav-button" id="clear"><span class="fa fa-trash fa-3x"></span></div>
       </div>
     </div>
+    <aside id="stats">
+      <button id="slidetoggle">toggle</button>
+      <section id="statpanel">
+        <h2>Raptor</h2>
+        <section id="runRoute" class="tab-content">
+          <section id="route-filter">
+          </section>
+        </section>
+        <section id="stats-comparison">
+        </section>
+      </section>
+    </aside>
       <!-- <input type="submit" id="submit"><br>
         <input id="mapall" type="checkbox" checked>Show markers</><br>
         <input id="delete" type="button">Delete last marker</>
@@ -96,6 +91,7 @@
       <script src="scripts/model/route.js"></script>
       <script src="scripts/model/map.js"></script>
       <script src="scripts/view/elevationView.js"></script>
+      <script src="scripts/view/nav.js"></script>
       <!-- <script src="scripts/view/mapView.js"></script> -->
       <script src="scripts/controllers/controller.js"></script>
       <!-- <script src="scripts/view/statsBar.js"></script> -->
