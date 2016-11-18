@@ -15,13 +15,11 @@ header{
 }
 .top{
   height: 50%;
-  /*background-color: purple;*/
   position: relative;
   text-align: center;
 }
 .bottom{
   height: 50%;
-  /*background-color: white;*/
   position: relative;
   text-align: center;
 }
