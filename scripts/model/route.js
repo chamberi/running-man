@@ -3,10 +3,11 @@
   function Route(markers, map){
     this.id = googleMap.routeList.length + 1;
     this.markers = markers;
+    this.color = Route.colors[Math.floor(Math.random() * Route.colors.length)];
     googleMap.routeList.push(this);
   };
 
-  Route.colors = ['navy', 'gray', 'fuchsia', 'lime', 'maroon'];
+  Route.colors = ['Aqua','Aquamarine','Azure','Bisque','Blue','BlueViolet','BurlyWood','CadetBlue','Chartreuse','Chocolate','Coral','CornflowerBlue','Crimson','Cyan','DarkBlue','DarkCyan','DarkGoldenRod','DarkGreen','DarkMagenta','DarkOliveGreen','Darkorange','DarkRed','DarkSalmon','DarkSeaGreen','DarkSlateBlue','DarkTurquoise','DarkViolet','DeepPink','DeepSkyBlue','DodgerBlue','FireBrick','ForestGreen','Fuchsia','Gold','GoldenRod','Green','GreenYellow','HotPink','IndianRed','Indigo','Ivory','Lavender','LavenderBlush','LawnGreen','LemonChiffon','LightBlue','LightCoral','LightCyan','LightGoldenRodYellow','LightGreen','LightPink','LightSalmon','LightSeaGreen','LightSteelBlue','LightYellow','Lime','LimeGreen','Linen','Magenta','Maroon','MediumAquaMarine','MediumBlue','MediumOrchid','MediumPurple','MediumSeaGreen','MediumSlateBlue','MediumSpringGreen','MediumTurquoise','MediumVioletRed','MidnightBlue','MintCream','MistyRose','Navy','Olive','OliveDrab','Orange','OrangeRed','Orchid','Peru','Pink','Plum','Purple','Red','RosyBrown','RoyalBlue','SeaGreen','SeaShell','Sienna','Silver','SlateBlue','SpringGreen','SteelBlue','Teal','Thistle','Tomato','Turquoise','Violet','Yellow','YellowGreen'];
 
 
   function grabMarkers(){
@@ -18,32 +19,24 @@
     });
   };
 
-  Route.renderActive = function () {
-    var routes = googleMap.getRequest(googleMap.activeIndexes);
+  Route.renderActive = function() {
+    googleMap.activeIndexes.forEach(function(idx) {
+      Route.renderRoute(googleMap.routeList[idx], true);
+    });
+    Route.renderActiveElevations();
+  };
+
+  Route.renderActiveElevations = function () {
     $('#elevation_chart').empty();
-    routes.forEach(function(route){
-      Route.renderRoute(route);
-      var renderer = googleMap.rendererArray[route.id - 1];
-      google.maps.event.clearInstanceListeners(renderer);
-      google.maps.event.addListener(renderer, 'directions_changed',
-      function() {
-        console.log('event');
-        var draggedRoute = renderer.getDirections();
-        var detailedPath = draggedRoute.routes[0].overview_path.map(function(point) {
-          return {
-            lat: point.lat(),
-            lng: point.lng()
-          };
-        });
-        route.detailedPath = detailedPath;
-        Route.countDistance(draggedRoute.routes[0], route);
-        elevationsView.calculateStats(route, [Route.rebuildStats]);
-      });
+    googleMap.activeIndexes.forEach(function(idx) {
+      var route = googleMap.routeList[idx];
+      elevationsView.displayPathElevation(route.detailedPath);
+      elevationsView.plotElevation('OK', route);
     });
     googleMap.setLocal();
   };
 
-  Route.renderRoute = function(route){
+  Route.renderRoute = function(route, dontRenderElevations){
     var renderer = googleMap.rendererArray[route.id - 1];
     renderer.setOptions({
       preserveViewport: true,
@@ -53,41 +46,42 @@
       polylineOptions: {
         strokeWeight: 4,
         strokeOpacity: .8,
-        strokeColor: Route.colors[route.id - 1]
+        strokeColor: route.color
       }
+    });
+    google.maps.event.clearInstanceListeners(renderer);
+    google.maps.event.addListener(renderer, 'directions_changed',
+    function() {
+      var draggedRoute = renderer.getDirections();
+      var detailedPath = draggedRoute.routes[0].overview_path.map(function(point) {
+        return {
+          lat: point.lat(),
+          lng: point.lng()
+        };
+      });
+      route.detailedPath = detailedPath;
+      Route.countDistance(draggedRoute.routes[0], route);
+      elevationsView.calculateStats(route, [Route.rebuildStats]);
     });
 
     renderer.setDirections(googleMap.routeResponses[route.id - 1]);
-    elevationsView.displayPathElevation(route.detailedPath);
-    elevationsView.plotElevation('OK', route);
+    if (dontRenderElevations) {
+      return 1;
+    } else {
+      Route.renderActiveElevations();
+    }
   };
 
   Route.rebuildStats = function(route) {
     var $ps = $('aside#stats div#' + route.id + ' p');
-    console.log($ps);
     $('div#' + route.id + ' p').innerHTML = '';
-    $ps[0].innerText = 'Total Distance: ' + route.totalDistance + ' km (' + route.totMiles + ' mi)';
-    $ps[1].innerText = 'Distance > 10%: ' + route.steepDistance + ' m (' + route.steepMiles + ' mi)';
-    $ps[2].innerText = 'Elevation Gain: ' + route.totalGain + ' m (' + route.elevMiles + ' mi)';
+    $ps[0].innerHTML = 'Total Distance: <span class="num">' + route.totalDistance + '</span> km (<span class="num">' + route.totMiles + '</span> mi)';
+    $ps[1].innerHTML = 'Distance > 10%: <span class="num">' + route.steepDistance + '</span> m (<span class="num">' + route.steepMiles + '</span> mi)';
+    $ps[2].innerHTML = 'Elevation Gain: <span class="num">' + route.totalGain + '</span> m (<span class="num">' + route.elevMiles + '</span> mi)';
     $('#elevation_chart').empty();
     googleMap.activeIndexes.forEach(function(idx) {
       elevationsView.plotElevation('OK', googleMap.routeList[idx]);
     });
-  };
-  // Route.rebuildStats = function(route) {
-  //   $('div p').empty();
-  //   $('div p')[0].append('Total Distance: ' + route.totalDistance + ' km (' + route.totMiles + ' mi)');
-  //   $('div p')[1].append('Distance > 10%: ' + route.steepDistance + ' m (' + route.steepMiles + ' mi)');
-  //   $('div p')[2].append('Elevation Gain: ' + route.totalGain + ' m (' + route.elevMiles + ' mi)');
-  //   $('#elevation_chart').empty();
-  //   googleMap.activeIndexes.forEach(function(idx) {
-  //     elevationsView.plotElevation('OK', googleMap.routeList[idx]);
-  //   });
-  // };
-
-  Route.showRoute = function() {
-    selectRouteDisplay();
-    Route.renderActive();
   };
 
 
@@ -129,7 +123,6 @@
       destination: {lat: path[len - 1].location.lat,
                 lng: path[len - 1].location.lng},
       waypoints: path.slice(1,len-1),
-      optimizeWaypoints: true,
       travelMode: 'WALKING'
     };
   };
@@ -149,14 +142,8 @@
     route.totMiles = distanceMiles.toFixed(2);
   };
 
-  // var statsComparison = document.getElementById('stats-comparison');
-  // statsComparison.innerHTML = 'SteepDistance = ' + googleMap.routeList[0].steepDistance;
-
   module.Route = Route;
-  // var summaryPanel = document.getElementById('directions-panel');
-  // summaryPanel.innerHTML = '';
-  // // For each route, display summary information.
-  //
+
   // for (var i = 0; i < responseRoute.legs.length; i++) {
   //   var routeSegment = i + 1;
   //   summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +

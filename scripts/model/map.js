@@ -13,34 +13,30 @@
       zoom: 13,
       center: {lat: 47.608, lng: -122.335},
       mapTypeId: 'terrain',
-      clickableIcons: false
+      clickableIcons: false,
+      disableDefaultUI: true,
+
+
     });
 
     $('#showMarkers').click(function() {
       $('#hideMarkers').show();
       $('#showMarkers').hide();
-      showOverlays();
+      toggleOverlays(map);
     });
     $('#hideMarkers').click(function(){
       $('#showMarkers').show();
       $('#hideMarkers').hide();
-      clearOverlays();
+      toggleOverlays(null);
     });
 
-    function clearOverlays() {
-      if (googleMap.markers) {
-        for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
-          googleMap.markers[i].setMap(null);
-        }
-      }
-    }
-
-    function showOverlays() {
-      if (googleMap.markers) {
-        for( var i = 0, n = googleMap.markers.length; i < n; ++i ) {
-          googleMap.markers[i].setMap(map);
-        }
-      }
+    function toggleOverlays(nullOrMap) {
+      googleMap.markers.forEach(function(marker) {
+        marker.setMap(nullOrMap);
+      });
+      googleMap.activeIndexes.forEach(function(index) {
+        googleMap.rendererArray[index].setMap(nullOrMap);
+      });
     }
 
     $('#deleteMarkers').on('click', function() {
@@ -88,13 +84,27 @@
       googleMap.rendererArray.push(renderer);
       renderer.setMap(map);
       googleMap.activeIndexes.push(newRoute.id - 1);
-      Route.queryRoute(newRoute, [googleMap.addFilter,Route.renderActive]);
+      Route.queryRoute(newRoute, [googleMap.addFilter,Route.renderRoute]);
       // renderer.addListener('directions_changed', function() {
       //   console.log('changed');
       //   computeTotalDistance(directionsDisplay.getDirections());
       // });
     });
 
+    $('ul#route-list').click(function(e) {
+      if ($(e.target).hasClass('delete')) {
+        var id = parseInt(e.target.id);
+        googleMap.routeList.splice(id-1, 1);
+        googleMap.rendererArray[id-1].setMap(null);
+        googleMap.rendererArray.splice(id-1,1);
+        if (googleMap.activeIndexes.includes(id-1)) {
+          googleMap.activeIndexes.splice(googleMap.activeIndexes.indexOf(id-1),1);
+        }
+        $('ul#route-list li#' + id).remove();
+        Route.renderActive();
+        googleMap.setLocal();
+      }
+    });
 
     $('#toggleOn').on('click', function(){
       $('#toggleOn').hide();
@@ -106,7 +116,6 @@
       $('#toggleOff').hide();
       $('aside').toggle('slide',{direction: 'right'}, 500);
     });
-
   };
 
   googleMap.getRequest = function(which) {
@@ -153,32 +162,29 @@
   };
 
   googleMap.addFilter = function(route) {
-    var template = $('#route-filter-template').html();
+    var template = $('#route-li-template').html();
     var templateRender = Handlebars.compile(template);
-    $('#route-filter').append(templateRender(route));
-    var $filter = $('#route-filter h3#' + route.id);
+    $('ul#route-list').append(templateRender(route));
+    var $filter = $('ul#route-list h3#' + route.id);
     $filter.unbind();
     $filter.click(function(event) {
+      $filter.next().slideToggle();
       var id = parseInt(event.target.id) - 1;
-      console.log(id);
-      console.log(googleMap.activeIndexes.includes(id));
       if (googleMap.activeIndexes.includes(id)){
-        console.log('active = hide');
-
-        googleMap.activeIndexes.splice(googleMap.activeIndexes.indexOf(id),1);
+        google.maps.event.clearInstanceListeners(googleMap.rendererArray[id]);
         googleMap.rendererArray[id].setMap(null);
+        googleMap.activeIndexes.splice(googleMap.activeIndexes.indexOf(id),1);
+        Route.renderActiveElevations();
       } else {
-        console.log('show');
         googleMap.activeIndexes.push(id);
         googleMap.rendererArray[id].setMap(googleMap.map);
+        Route.renderRoute(googleMap.routeList[id]);
       }
-      Route.renderActive();
-      $filter.next().toggle();
       return false;
     }).next().hide();
     if (route.isNew) {
       route.isNew = false;
-      $('#route-filter h3#' + route.id).next().show();
+      $filter.next().show();
     }
   };
 

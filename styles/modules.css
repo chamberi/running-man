@@ -7,12 +7,12 @@ aside section#statpanel {
   bottom: 0px;
   left: 0%;
   display: inline-block;
-  background-color: #11161C;
+  background-color: #1a1e22;
+  opacity: .7;
   border-left: solid 2px darkgray;
-  border-bottom: solid 2px darkgray;
+  /*border-bottom: solid 2px darkgray;*/
   font-size: 16px;
   height: 100vh;
-  border-bottom-left-radius: 8px;
   font-family: 'Lora';
   overflow: scroll;
   font-size: 16px;
@@ -20,15 +20,15 @@ aside section#statpanel {
 
 }
 aside section#statpanel h2 {
-  margin-top: 25%;
-  text-align: center;
+  margin: 26px 50px;
+  text-align: right;
   color: white;
   overflow: auto;
+  font-family: 'Gloria Hallelujah', Serif;
 }
 
 aside h3 {
   margin-top: 8px;
-  color: white;
 }
 
 aside li {
@@ -49,24 +49,18 @@ aside ul#filters {
 aside p, h3 {
   padding: 0;
   margin: 2px;
-  color: white;
 }
+
 
 #elevation_chart h4 {
   text-align: center;
-
+  margin: 0;
+  padding-top: 10px;
+  background-color: #f0f0ef;
+  color: black;
 }
 
-select.route-filter {
-  margin: 0 auto;
-  padding: 0;
-  width: 50%;
-  display: inline-block;
-}
 
-select#required {
-
-}
 
 button#slidetoggle {
   position: absolute;
@@ -105,8 +99,8 @@ button#slidetoggle {
   position: absolute;
   display: flex;
   justify-content:space-between;
-  top: 75px;
-  width: 100%;
+  top: 93vh;
+  width: 90%;
   /*background-color: white*/
 }
 .map-nav-button{
@@ -121,10 +115,14 @@ button#slidetoggle {
   /*font-size: 2.5em;*/
   line-height: 60px;
 }
-span{
+.map-nav-button span{
   line-height: 60px;
+  opacity: .5;
 }
-#toggleOff{
+.map-nav-button span:hover {
+  opacity: 1;
+}
+#toggleOff, #toggleOn {
   display: none;
 }
 #showMarkers{
@@ -133,17 +131,41 @@ span{
 /*#elevation_chart h4 {
   text-align: center;*/
 
-
-#route-filter h3{
-  border: 1px solid gray;
-  border-radius: 4px;
-  padding: 5px;
-  text-align: center;
+ul#route-list {
+  font-family: 'Hammersmith One';
+  margin-top: 80px;
 }
 
-#route-filter div {
+#route-list li {
+  margin: 10px;
+  border-radius: 4px;
+  border: 8px solid #898;
+  opacity: 1;
+}
+#route-list span.num {
+  font-size: 130%;
+  color: white;
+}
+#route-list h3 {
+  border: 0px inset gray;
+  border-radius: 4px;
+  margin: 0;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #50505f;
+  color: white;
+}
+#route-list div {
   padding: 5px;
   font-size: .9em;
+  color: #edc;
+}
+#route-list li button.delete {
+  /*position: relative;*/
+  float: right;
+  top: 0;
+  right: 0;
 }
 .top-nav{
   position: fixed;
@@ -174,23 +196,41 @@ margin-top: 0px;
 background-color: black;
 opacity: 0.20;
 }
-#route-name{
-  /*display: none;*/
+
+input#route-name {
   position: absolute;
-  bottom: 105vh;
-  width: 30%;
-  height: 20px;
-  margin-left: 35%;
-  margin-right: 35%;
+  top: 86vh;
+  left: 14%;
+  width: 15%;
+  height: 25px;
   z-index: 2;
-  opacity: .5;
+  opacity: .6;
   text-align: center;
   transition: 300ms;
+  font-size: .8em;
+  display: none;
 }
 
 input#route-name:hover, input#route-name:focus {
   opacity: .9;
 }
+
+
+
+/*@media screen and (min-width: 500px and max-width: 899px) {
+  div#scroll-overlay {
+    margin: 0;
+    display: block;
+    background-color: black;
+    opacity: 1;
+    width: 10vw;
+    height: 100vw;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+  }
+}*/
 
 @media only screen and (min-width: 900px) {
   #stats-link{
@@ -201,16 +241,18 @@ input#route-name:hover, input#route-name:focus {
     right: 0;
     top: 0;
     height: 100vh;
-    width: 350px;
+    width: 30vw;
+    max-width: 350px;
   }
-  #route-name{
+  #toggleOn {
+    display: inline-block;
+  }
+  .map-bar{
     position: absolute;
+    display: flex;
+    justify-content:space-between;
     top: 90vh;
-    width: 250px;
-    height: 1em;
-    font-size: 2em;
-    left: 20px;
-    margin: 0;
-    padding: 0;
+    width: 30%;
+    /*background-color: white*/
   }
 }

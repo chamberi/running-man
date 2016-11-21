@@ -5,15 +5,18 @@
     <meta charset="utf-8">
     <title>Running Man</title>
     <script src="https://www.google.com/jsapi"></script>
-    <script id="route-filter-template" type="text/x-handlebars-template">
-      <h3 id="{{id}}">{{name}}</h3>
-      <div id="{{id}}">
-        <p>Total Distance: {{totalDistance}} km ({{totMiles}} mi)</p>
-        <p>Distance > 10%: {{steepDistance}} m ({{steepMiles}} mi)</p>
-        <p>Elevation Gain: {{totalGain}} m ({{elevMiles}} mi)</p>
-      </div>
+    <script id="route-li-template" type="text/x-handlebars-template">
+      <li id="{{id}}">
+        <h3 id="{{id}}">{{name}}</h3>
+        <div id="{{id}}">
+          <p>Distance:<br> <span class="num">{{totalDistance}}</span> km (<span class="num">{{totMiles}}</span> mi)</p>
+          <p>Distance > 10%:<br> <span class="num">{{steepDistance}}</span> m (<span class="num">{{steepMiles}}</span> mi)</p>
+          <p>Climb:<br> <span class="num">{{totalGain}}</span> m (<span class="num">{{elevMiles}}</span> mi)</p>
+          <button class="delete" id="{{id}}">Delete</button>
+        </div>
+      </li>
     </script>
-    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Vollkorn" rel="stylesheet">
     <link href="styles/base.css" rel="stylesheet">
     <link href="styles/layout.css" rel="stylesheet">
     <link href="styles/modules.css" rel="stylesheet">
@@ -23,17 +26,12 @@
   <body>
     <section class="site-info">
       <header>
-        <nav>
-          <ul class="top-nav">
-            <li id="home-link" class="top-nav-button"><a class="top-nav-link" href="#">HOME</a></li><!--
-            --><li id="map-link" class="top-nav-button"><a class="top-nav-link" href="#">MAP</a></li><!--
-            --><li id="stats-link" class="top-nav-button"><a class="top-nav-link" href="#">STATS</a></li><!--
-            --><li class="top-nav-button"><a class="top-nav-link" href="aboutUs.html">ABOUT</a></li>
-          </ul>
-      </nav>
-      <div class="nav-shade">
+        <!-- <nav>
 
-      </div>
+        </nav> -->
+        <!-- <div class="nav-shade">
+
+        </div> -->
       </header>
       <section class="top">
         <h1>RUNNING MAN</h1>
@@ -44,23 +42,24 @@
       </section>
     </section>
     <div class="wrapper">
-      <input type="text" id="route-name" placeholder="Name your route">
-      <div id="map" style="height:100vh;"></div>
-      <div class="map-bar">
-        <div class="map-nav-button" type="submit" id="submit"><span class="fa fa-check-circle fa-3x"></span></div><!--
-     --><div class="map-nav-button" id="showMarkers" type="checkbox" checked><span class="fa fa-eye fa-3x"></span></div><!--
-     --><div class="map-nav-button" id="hideMarkers" type="checkbox" checked><span class="fa fa-eye-slash fa-3x"></span></div><!--
-     --><div class="map-nav-button" id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"><span class="fa   fa-minus-square fa-3x"></span></div><!--
-     --><div class="map-nav-button" id="toggleOn"><span class="fa fa-toggle-on fa-rotate-180 fa-3x"></span></div><!--
-     --><div class="map-nav-button" id="toggleOff"><span class="fa fa-toggle-off fa-rotate-180 fa-3x"></span></div><!--
-     --><div class="map-nav-button" id="clear"><span class="fa fa-trash fa-3x"></span></div>
+      <div class="mapwrap">
+        <input type="text" id="route-name" placeholder="Name your route">
+        <div id="map" style="height:100vh;"></div>
+        <div class="map-bar">
+          <div class="map-nav-button" id="clear"><span class="fa fa-trash fa-3x" alt="Delete stored routes"></span></div><!--
+       --><div class="map-nav-button" id="showMarkers" type="checkbox" checked><span class="fa fa-eye fa-3x" alt="Show markers"></span></div><!--
+       --><div class="map-nav-button" id="hideMarkers" type="checkbox" checked><span class="fa fa-eye-slash fa-3x" alt="Hide markers"></span></div><!--
+       --><div class="map-nav-button" id="deleteMarkers" type="button" onclick="deleteMarkers" value="Delete last marker"><span class="fa   fa-minus-square fa-3x" alt="Delete last marker"></span></div><!--
+       --><div class="map-nav-button" type="submit" id="submit"><span class="fa fa-check-circle fa-3x" alt="Submit"></span></div><!--
+       --><div class="map-nav-button" id="toggleOn"><span class="fa fa-toggle-on fa-rotate-180 fa-3x" alt="Show panel"></span></div><!--
+       --><div class="map-nav-button" id="toggleOff"><span class="fa fa-toggle-off fa-rotate-180 fa-3x" alt="Hide panel"></span></div>
+        </div>
       </div>
       <aside id="stats">
         <section id="statpanel">
-          <h2>STATS</h2>
           <section id="runRoute" class="tab-content">
-            <section id="route-filter">
-            </section>
+            <ul id="route-list">
+            </ul>
           </section>
           <section id="stats-comparison">
           </section>

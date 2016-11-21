@@ -51,7 +51,7 @@
       if (callback) {
         callback[0](route);
         if (callback[1]) {
-          callback[1]();
+          callback[1](route);
         }
       }
     });
@@ -77,9 +77,10 @@
     }
 
     chart.draw(data, {
-      height: 150,
+      height: 250,
       legend: 'none',
       titleY: 'Elevation (m)',
+      backgroundColor: '#f0f0ef'
     });
   };
 
